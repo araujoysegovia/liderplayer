@@ -1,0 +1,275 @@
+.header{
+	background-color: #174159;
+}
+
+.header .ays-header{
+	width: 50px;
+	margin-top: 7px;
+	margin-right: 4px;
+	float: right;
+}
+
+.header .btn-options{
+	margin-bottom: 10px;
+	margin-top: 9px;
+	margin-left: 10px;
+	height: 30px;
+	width: 30px;
+	background-color: #CCCCCC;
+}
+
+.navbar{
+	background-color: #F3F3F3;
+}
+
+.navbar .btn-nav{
+	height: 30px;
+	width: 30px;
+	border-radius: 100%
+}
+
+.li-nav a{
+	background: #8AACD1 !important;
+	border-color: #617E9E !important;
+}
+
+.li-nav span{
+	display: inline-block;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+  	margin-left: 10px;
+  	border: none;
+  	font: normal 30px/1 "Fredoka One", Helvetica, sans-serif;
+  	color: rgba(255,255,255,1);
+  	text-align: center;
+  	-o-text-overflow: clip;
+	text-overflow: clip;
+	text-shadow: rgb(128, 119, 119) 0.1em 0.1em 0.2em;
+  /*text-shadow: 3px 3px 0 #0199d9 , 4px 4px 0 #0199d9 , 5px 5px 0 #0199d9 , 6px 6px 0 #0199d9 , 7px 7px 0 #0199d9 , 8px 8px 0 #0199d9 , 9px 9px 0 #0199d9 , 10px 10px 0 #0199d9 , 11px 11px 0 #0199d9 , 12px 12px 0 #0199d9 , 13px 13px 0 #0199d9 , 14px 14px 0 #0199d9 , 15px 15px 0 #0199d9 , 16px 16px 0 #0199d9 , 17px 17px 0 #0199d9 , 18px 18px 0 #0199d9 , 19px 19px 0 #0199d9 , 20px 20px 0 #0199d9 ;*/
+}
+
+.li-win i{
+	background-image: url("../images/icons/win.png");
+	width: 24px;
+	height: 24px;
+}
+
+.li-loose i{
+	background-image: url("../images/icons/loose.png");
+	width: 24px;
+	height: 24px;
+}
+
+.li-notify i{
+	background-image: url("../images/icons/notification.png");
+	background-size: 24px 24px;
+	width: 24px;
+	height: 24px;
+}
+
+.panel-list{
+	margin-right: 10px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+.panel-list .panel-heading{
+	font-style: italic;
+}
+
+/*Logo del Equipo*/
+.logo-team{
+	margin-top: 10px;
+	text-align: center;1
+}
+
+.logo-team .logo-img{
+	width: 120px;
+}
+
+/*Estilos para panel del duelo actual*/
+.player-item .player-item-container{
+	padding-bottom: 20px;
+	padding-top: 10px;
+	width: 110px;
+	text-align: center;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	background-color: white;
+	border: 1px solid #DDD;
+	float: left
+}
+
+
+.player-item .player-item-container .player-img img{
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	border-radius: 100px;
+	border: 1px solid #DDD;
+}
+
+.player-item .player-info{
+	width: 84px;
+	position: relative;
+	left: 50%;
+	margin-left: -42px;
+}
+
+.player-item .player-info h5{
+	font-size: 12px;
+	font-style: italic;
+}
+
+.player-item .player-info .player-win{
+	float: left;
+}
+
+.player-item .player-info .player-win span, .player-item .player-info .player-loose span{
+	font: normal 12px/1 "Fredoka One", Helvetica, sans-serif;
+	margin-left: 5px;
+}
+
+.player-item .player-info .player-win img, .player-item .player-info .player-loose img{
+	width: 16px;
+	height: 16px;
+	margin-top:-7px
+}
+
+.player-item .player-info .player-loose{
+	float: right;
+}
+
+.player-item .player-item-vs{
+	height: 100%;
+	width: 60px;
+	float: left;
+	text-align: center;
+	padding-top: 50px;
+}
+
+.player-item .player-item-vs img{
+	width: 25px;
+	height: 25px;
+}
+
+
+/*Estilos para el panel de los miembros del equipo*/
+.panel-list-list > li{
+	list-style: none;
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+.panel-list-list{
+	margin-left: -35px;
+}
+
+.player-item-list{
+	background-color: white;
+	border: 1px solid #DDD;
+	overflow: hidden;
+	padding-bottom: 5px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.player-item-list .player-img{
+	text-align: center;
+	margin-top: 22px;
+	float: left;
+	max-width: 80px;
+	min-width: 40px;
+	width: 60px;
+	overflow: hidden;
+}
+
+.player-item-list .player-img img{
+	overflow: hidden;
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	border-radius: 100px;
+	border: 1px solid #DDD;
+}
+
+.player-item-list .player-info{
+	float: left;
+	margin-left: 15px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.player-item-list .player-info h5{
+	font-weight: bold;
+	font-size: 12px;
+	font: normal 14px/1 "Fredoka One", Helvetica, sans-serif;
+	color: #333;
+	margin-top: 0px;
+}
+
+.panel-list .panel-body{
+	overflow-y: scroll;
+	background-color: #F7F7F8;
+}
+
+.player-item-list .player-info h6{
+	font-style: italic;
+	color: #BBB;
+	font-weight: 100;
+}
+
+.player-item-list .player-info .games-info{
+	width: 200px;
+	float: left;
+}
+
+.player-item-list .player-info .games-info .match-info{
+	width: 95px;
+	float: left;
+	
+}
+
+.player-item-list .player-info .games-info .match-info span{
+	font: normal 14px/1 "Fredoka One", Helvetica, sans-serif;
+}
+
+.match-info span{
+	display: inline-block;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+  	margin-left: 10px;
+  	border: none;
+  	font: normal 20px/1 "Fredoka One", Helvetica, sans-serif;
+  	color: rgba(100,100,100,1);
+  	text-align: center;
+  	-o-text-overflow: clip;
+	text-overflow: clip;
+	text-shadow: rgb(248, 239, 239) 0.1em 0.1em 0.2em;
+}
+
+
+/*Panel desplegable a la izquierda donde estarán las opciones de perfil y demas*/
+.home .menu-panel{
+	background-color: #5C7491;
+}
+
+.home .menu-panel > ul > li > a{
+	color: white;
+}
+
+.home .menu-panel .img-user{
+	margin-top: 10px;
+	text-align: center;
+}
+
+.home .menu-panel .img-user img{
+	background-color: white;
+	overflow: hidden;
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	border-radius: 100px;
+	border: 1px solid #DDD;
+}

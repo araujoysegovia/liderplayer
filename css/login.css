@@ -1,0 +1,59 @@
+body > div[data-role=page]{
+	background-color: #E0EDFB;
+}
+
+.login{
+	width: 100%;
+	text-align: center;
+}
+
+.login > .logo {
+	margin-top: 30px;
+}
+
+.login form{
+	margin-top: 60px;
+	width: 250px;
+	left: 50%;
+	margin-left: -114px;
+	position: relative;
+}
+
+.login .login-form form input{
+	font-size: 17px;
+	text-align: center;
+}
+
+.login-form > form > button.btn-ingresar{
+	color: #000;
+	height: 32px;
+	margin-top: 10px;
+	padding-top: 5px;
+	width: 150px;
+	font-weight: bold;
+	font-size: 12px;
+	border: none;
+	background-image: -webkit-gradient(
+	linear,
+	left top,
+	left bottom,
+	color-stop(0, #FFFD65),
+	color-stop(1, #FBB23C)
+    );
+	background-image: -o-linear-gradient(bottom, #FFFD65 0%, #FBB23C 100%);
+	background-image: -moz-linear-gradient(bottom, #FFFD65 0%, #FBB23C 100%);
+	background-image: -webkit-linear-gradient(bottom, #FFFD65 0%, #FBB23C 100%);
+	background-image: -ms-linear-gradient(bottom, #FFFD65 0%, #FBB23C 100%);
+	background-image: linear-gradient(to bottom, #FFFD65 0%, #FBB23C 100%);
+}
+
+.login-form > form > span#signinButton{
+/* 	position: absolute;
+	top: 85%;
+	left: 150px; */
+	float: left;
+}
+
+.login .login-form .alert{
+	margin-top: 20px;
+}

@@ -1,0 +1,91 @@
+<html>
+	<head>		
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width" />
+		<script src= "js/libs/underscore.js"></script>
+		<script src= "js/libs/jquery.min.js"></script>
+		<script src= "js/libs/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.js"></script>
+		<script src= "js/libs/backbone.js"></script>
+		<script src= "js/libs/bootstrap.min.js"></script>
+
+		<script src= "js/session.js"></script>
+		<script src= "js/main.js"></script>
+		<script src= "js/view/ListPanel.js"></script>
+		<script src= "js/view/List.js"></script>
+		<script src= "js/model/Player.js"></script>
+		<script src= "js/collection/Players.js"></script>
+		<script src= "js/routerManager.js"></script>
+		<script src= "js/login.js"></script>
+
+
+		<link rel="stylesheet" href="js/libs/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.css" />
+		<link rel="stylesheet" href="css/libs/bootstrap.min.css" />
+
+		<link rel="stylesheet" href="css/login.css" />
+		<link rel="stylesheet" href="css/home.css" />
+	</head>
+	<body>
+		<div class="login">
+			<div class="logo">
+				<img src="images/logoAyS.png" alt="Araujo & Segovia" width="320px"/>
+			</div>
+			<div class="login-form">
+				<form role="form" class="form-class">
+					<div class="form-group">
+						<input type="email" name="_username" class="form-control" id="email" placeholder="Correo electr&oacute;nico">
+					</div>
+					<div class="form-group">
+						<input type="password" name="_password" class="form-control" id="password" placeholder="Contraseña">
+					</div>
+					<button type="submit" class="btn btn-primary btn-ingresar">Ingresar</button>
+					<span id="signinButton">
+					 	<span class="g-signin"
+							data-callback="signinCallback"
+							data-clientid="409288717107-h73ade2t3homia8e8r6o4dg3bmuingn3.apps.googleusercontent.com"
+							data-cookiepolicy="single_host_origin"
+							data-requestvisibleactions="http://schemas.google.com/AddActivity"
+							data-scope="https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/userinfo.email"
+							data-approvalprompt="force"
+							data-theme="dark">
+							</span>
+					</span>
+				</form>
+			</div>
+		</div>
+		<div class="home" style="display:none;">
+			<header class="header">
+				<button type="button" class="btn btn-default btn-lg btn-options">
+					<span class="glyphicon glyphicon-align-justify" style="margin-top:-6px; margin-left:-8px;"></span>
+				</button>
+				<img src="images/logo_ays_menu_active.png" class="ays-header" alt="Araujo & Segovia" width="60"/>
+			</header>
+			<div data-role="navbar">
+			    <ul>
+			        <li class="li-nav li-win">
+						<a href="#">
+							<i class="glyphicon"></i>
+							<span>5</span>
+						</a>
+					</li>
+					<li class="li-nav li-loose">
+						<a href="#">
+							<i class="glyphicon"></i>
+							<span>1</span>
+						</a>
+					</li>
+					<li class="li-nav li-notify">
+						<a href="#">
+							<i class="glyphicon"></i>
+							<span>2</span>
+						</a>
+					</li>
+			    </ul>
+			</div>
+			<div class="body-container">
+
+			</div>
+			<div data-role="panel" id="menu-panel" class="menu-panel" data-position="left" data-display="overlay">
+			</div>
+		</div>
+	</body>
+</html>
