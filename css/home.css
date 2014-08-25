@@ -260,6 +260,10 @@
 	color: white;
 }
 
+.home .menu-panel > ul > .first-element{
+	margin-top: 10px;
+}
+
 .home .menu-panel .img-user{
 	margin-top: 10px;
 	text-align: center;
@@ -272,4 +276,31 @@
 	-moz-border-radius: 100px;
 	border-radius: 100px;
 	border: 1px solid #DDD;
+}
+
+
+/*Panel de los duelos terminados*/
+.panel-danger>.panel-heading{
+	background-color: #D12020;
+	color: white;
+}
+.player-item .item-win{
+	background-color: #DFF0D8;
+}
+
+.player-item .item-loose{
+	background-color: #CFCFCF;
+}
+
+.player-item .player-item-container .player-info .games-info .score{
+	text-align: center;
+}
+
+.gray-scale{
+	-moz-filter: grayscale(100%);
+	-o-filter:grayscale(100%);
+	-ms-filter:grayscale(100%);
+	filter: grayscale(100%);
+	-webkit-filter: grayscale(100%); /* For Webkit browsers */
+	filter: gray; /* For IE 6 - 9 */
 }

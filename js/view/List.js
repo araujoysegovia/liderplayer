@@ -17,10 +17,29 @@ var List = Backbone.View.extend({
 		var me = this;
 		var imgPerfil = $("<img/>").attr("src", "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png");
 		me.createItem(imgPerfil, "img-user");
-		var array = ["Perfil", "Simulador", "Equipos", "Posiciones Equipos", "Posiciones Jugadores", "Reglas", "Ayuda", "Cerrar Session"];
+		var array = [
+				[
+					"Perfil",
+					"first-element"
+				],
+				"Practicar",
+				"Equipos",
+				"Posiciones Equipos",
+				"Posiciones Jugadores",
+				"Reglas",
+				"Ayuda",
+				"Cerrar Session"
+			]
 		_.each(array, function(val){
-			var value = $("<a></a>").html(val);
-			me.createItem(value);
+			if($.isArray(val)){
+				var value = $("<a></a>").html(val[0]);
+				me.createItem(value, val[1]);
+			}
+			else{
+				var value = $("<a></a>").html(val);
+				me.createItem(value);
+			}
+			
 		})
 		me.render();
 	},

@@ -47,13 +47,11 @@ body > div[data-role=page]{
 	background-image: linear-gradient(to bottom, #FFFD65 0%, #FBB23C 100%);
 }
 
-.login-form > form > span#signinButton{
-/* 	position: absolute;
-	top: 85%;
-	left: 150px; */
-	float: left;
-}
-
-.login .login-form .alert{
+.login .login-form > form > span#signinButton{
 	margin-top: 20px;
+	display: inline-block;
+	background: #DD4B39;
+	color: white;
+	width: 150px;
+	border-radius: 5px;
 }

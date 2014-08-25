@@ -83,7 +83,7 @@ Application.prototype = {
 					"</div>"+
 				  "</div>"
 		})
-		var listPanel = new ListPanel({
+		var teamPanel = new ListPanel({
 			title: "Mi Equipo: "+this.session.getUser().team.name,
 			container: $("div.body-container"),
 			className: "panel-primary",
@@ -107,6 +107,46 @@ Application.prototype = {
 							"</div>"+
 						"</div>"+
 					"</div>"+					
+				  "</div>"
+		})
+		var finishDuel = new ListPanel({
+			title: "Duelos Terminados",
+			container: $("div.body-container"),
+			className: "panel-danger",
+			maxHeight: 180,
+			collection: new Players(),
+			tpl: "<div class='player-item'>"+
+					"<div class='player-item-container item-win'>"+
+						"<div class='player-img'>"+
+							"<img src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
+						"</div>"+
+						"<div class='player-info'>"+
+							"<h5><%= name %></h5>"+
+							"<div class='games-info'>"+
+								"<div class='match-info score'>"+
+									"<img src='images/icons/win.png' style='width:20px; margin-top:-7px'/>"+
+									"<span>2</span>"+
+								"</div>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
+					"<div class='player-item-vs'>"+
+						"<img src='http://www.ccbetania.org/alianzaextrema/wp-content/uploads/2012/02/VS-1.png' />"+
+					"</div>"+
+					"<div class='player-item-container player-item-container-2 item-loose'>"+
+						"<div class='player-img'>"+
+							"<img class='gray-scale' src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
+						"</div>"+
+						"<div class='player-info'>"+
+							"<h5><%= name %></h5>"+
+							"<div class='games-info'>"+
+								"<div class='match-info score'>"+
+									"<img src='images/icons/win.png' style='width:20px; margin-top:-7px' />"+
+									"<span>2</span>"+
+								"</div>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+
 				  "</div>"
 		})
 	},
