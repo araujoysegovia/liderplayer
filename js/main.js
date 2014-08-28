@@ -6,6 +6,7 @@ $(document).ready(function(){
 		var list = new List({
 			container: $("div.menu-panel"),
 		})
+		
 	})
 	
 	liderApp = new Application();
@@ -21,6 +22,7 @@ var Application = function(){
 Application.prototype = {
 	session: null,
 	router: null,
+	// server: "http://10.102.1.22/lider/web/app_dev.php",
 	server: "http://soylider.sifinca.net",
 	constructor: function(){
 		// this.editCollections();
@@ -32,9 +34,7 @@ Application.prototype = {
 		}, 10);
 	},
 	createHomePanels: function(){
-		
 		$("div.body-container").empty();
-
 		var duelPanel = new ListPanel({
 			title: "Duelo Actual",
 			container: $("div.body-container"),
@@ -44,7 +44,7 @@ Application.prototype = {
 			tpl: "<div class='player-item'>"+
 					"<div class='player-item-container'>"+
 						"<div class='player-img'>"+
-							"<img src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
+							"<img src='"+this.server+"/image/"+this.session.getUser().image+"' width='40px' height='40px' />"+
 						"</div>"+
 						"<div class='player-info'>"+
 							"<h5><%= name %></h5>"+
@@ -118,7 +118,7 @@ Application.prototype = {
 			tpl: "<div class='player-item'>"+
 					"<div class='player-item-container item-win'>"+
 						"<div class='player-img'>"+
-							"<img src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
+							"<img src='"+this.server+"/image/"+this.session.getUser().image+"' width='40px' height='40px' />"+
 						"</div>"+
 						"<div class='player-info'>"+
 							"<h5><%= name %></h5>"+
@@ -149,6 +149,24 @@ Application.prototype = {
 					"</div>"+
 				  "</div>"
 		})
+	},
+
+	createPerfilPanels: function(){
+		$("div.body-container").empty();
+		var perfil = new Perfil({
+			container: $("div.body-container"),
+		})
+	},
+	createSimulator: function(){
+		$("div.body-container").empty();
+		var quiestionManager = new QuestionManager({
+			container: $("div.body-container"),
+		})
+	},
+
+	disableHeaders: function(){
+		// $("header.header").css("display", "none");
+		$("div.navbar").css("display", "none");
 	},
 	getHeaders: function(){
 		return {

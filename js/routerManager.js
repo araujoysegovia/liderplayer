@@ -2,7 +2,12 @@ var routerManager = Backbone.Router.extend({
 	application: null,
 	routes: {
 		"" : "login",
-		"home": "home"
+		"login": "login",
+		"home": "home",
+		"profile": "perfil",
+		"practice": "practice",
+		"simulator": "simulator",
+		"logout": "logout"
 	},
 
 	login: function(){
@@ -21,9 +26,48 @@ var routerManager = Backbone.Router.extend({
 			Backbone.history.navigate("login", true);
 			return;
 		}
+		this.defaultValues();
+		var span = $("span.location-span").html("Inicio");
+		span.css("margin-left", "-"+span.width()/2)
+		this.application.createHomePanels();
+	},
+
+	perfil: function(){
+		if(!this.checkSession()){
+			Backbone.history.navigate("login", true);
+			return;
+		}
+		this.defaultValues();
+		var span = $("span.location-span").html("Perfil");
+		span.css("margin-left", "-"+span.width()/2)
+		this.application.createPerfilPanels();
+	},
+
+	logout: function(){
+		this.application.session.deleteSession();
+		Backbone.history.navigate("login", true);
+	},
+
+	practice: function(){
+		if(!this.checkSession()){
+			Backbone.history.navigate("login", true);
+			return;
+		}
+		this.defaultValues();
+		var span = $("span.location-span").html("Práctica");
+		span.css("margin-left", "-"+span.width()/2)
+		this.application.createSimulator();
+	},
+
+	defaultValues: function(){
 		$('div.login').css("display", "none");
 		$('div.home').css("display", "block");
-		this.application.createHomePanels();
+		$("header[data-id=mainHeader").css("display", "block");
+		$("header[data-id=questionHeader").css("display", "none");
+		$("div.navbar").css("display", "block");
+	},
+
+	simulator: function(){
 	},
 
 	checkSession: function(){

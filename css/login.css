@@ -1,5 +1,11 @@
+body{
+	/*background-color: #E0EDFB;*/
+	background: #727272 !important;
+}
+
 body > div[data-role=page]{
-	background-color: #E0EDFB;
+	/*background-color: #E0EDFB;*/
+	background: transparent;
 }
 
 .login{

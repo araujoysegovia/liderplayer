@@ -3,15 +3,19 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width" />
 		<script src= "js/libs/jquery.min.js"></script>
+		<script src= "js/libs/loader.js"></script>
 		<script src= "js/libs/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.js"></script>
 		<script src= "js/libs/underscore.js"></script>
 		<script src= "js/libs/backbone.js"></script>
 		<script src= "js/libs/bootstrap.min.js"></script>
 
+
 		<script src= "js/session.js"></script>
 		<script src= "js/main.js"></script>
 		<script src= "js/view/ListPanel.js"></script>
 		<script src= "js/view/List.js"></script>
+		<script src= "js/view/Perfil.js"></script>
+		<script src= "js/view/QuestionManager.js"></script>
 		<script src= "js/model/Player.js"></script>
 		<script src= "js/collection/Players.js"></script>
 		<script src= "js/routerManager.js"></script>
@@ -20,14 +24,16 @@
 
 		<link rel="stylesheet" href="js/libs/jquery.mobile-1.4.3/jquery.mobile-1.4.3.min.css" />
 		<link rel="stylesheet" href="css/libs/bootstrap.min.css" />
+		<link href='http://fonts.googleapis.com/css?family=Righteous&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
 
 		<link rel="stylesheet" href="css/login.css" />
 		<link rel="stylesheet" href="css/home.css" />
 	</head>
 	<body>
-		<div class="login">
+		<div class="login" style="display:none">
 			<div class="logo">
 				<img src="images/logoAyS.png" alt="Araujo & Segovia" width="320px"/>
+				<!-- <img src="images/logo-lider.jpeg" alt="Quien quiere ser lider inmobiliario" width="320px"/> -->
 			</div>
 			<div class="login-form">
 				<form role="form" class="form-class">
@@ -53,13 +59,28 @@
 			</div>
 		</div>
 		<div class="home" style="display:none;">
-			<header class="header">
+			<header class="header" data-id="mainHeader">
 				<button type="button" class="btn btn-default btn-lg btn-options">
 					<span class="glyphicon glyphicon-align-justify" style="margin-top:-6px; margin-left:-8px;"></span>
 				</button>
+				<span class="location-span"></span>
 				<img src="images/logo_ays_menu_active.png" class="ays-header" alt="Araujo & Segovia" width="60"/>
 			</header>
-			<div data-role="navbar">
+			<header style="display:none;" data-id="questionHeader">
+				<div class="araujo-logo">
+					<img src="images/logo_ays_menu_active.png" class="ays-header" alt="Araujo & Segovia" width="60"/>
+				</div>
+				<div class="question-category">
+					<span id="questionCategory"></span>
+				</div>
+				<div class="counter">
+					<span id="question-time-counter"></span>
+				</div>
+				<div class="progress progress-header">
+					<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+				</div>
+			</header>
+			<div data-role="navbar" class="navbar">
 			    <ul>
 			        <li class="li-nav li-win">
 						<a href="#">

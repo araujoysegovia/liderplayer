@@ -5,6 +5,8 @@ $(document).ready(function(){
 	var form = $("form", ".login-form");
 	form.submit(function(e){
 		e.preventDefault();
+		var loader = $(document.body).loaderPanel();
+		loader.show();
 		$.ajax({
 		  	type: "GET",     
 			url: liderApp.server+"/login",
@@ -17,10 +19,8 @@ $(document).ready(function(){
 			success: function(data){
 				liderApp.session.createSession(data);
 				Backbone.history.navigate("home", true);
-
 			},
 			error: function(xhr, status, error) {
-		    	loader.hide();
 		    	try{
 			    	var obj = jQuery.parseJSON(xhr.responseText);
 	            	$.notify(obj.message, { 
@@ -33,6 +33,9 @@ $(document).ready(function(){
 	            		globalPosition:"top center" 
 	            	});
 		    	}
+	    	},
+	    	complete: function(){
+	    		loader.hide();
 	    	}
 		});
 	})

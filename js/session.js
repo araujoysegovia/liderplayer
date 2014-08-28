@@ -16,6 +16,12 @@ Session.prototype = {
 		sessionStorage[this.sessionName] = jsonModel;
 	},
 
+	updateSession: function(obj){
+		var session = JSON.parse(sessionStorage[this.sessionName]);
+		session['user'] = obj;
+		sessionStorage[this.sessionName] = JSON.stringify(session);
+	},
+
 	deleteSession: function(){
 		sessionStorage.clear();
 	},

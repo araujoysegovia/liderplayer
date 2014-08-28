@@ -1,5 +1,5 @@
 .header{
-	background-color: #174159;
+	background-color: #25A9F5;
 }
 
 .header .ays-header{
@@ -18,7 +18,63 @@
 	background-color: #CCCCCC;
 }
 
-.navbar{
+.header > span{
+	margin-top: 8px;
+	position: absolute;
+	left: 50%;
+	color: white;
+	/*font-family: "Brandon", Arial, sans-serif;*/
+	font: normal 25px/1 'Righteous', cursive;
+  	color: rgba(255,255,255,1);
+  	text-align: center;
+  	-o-text-overflow: clip;
+	text-overflow: clip;
+	text-shadow: rgb(128, 119, 119) 0.1em 0.1em 0.2em;
+}
+header[data-id=questionHeader]{
+
+	position: relative;
+	height: 49px;
+}
+
+header[data-id=questionHeader] .progress-header{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	background-color: #25A9F5;
+}
+
+header[data-id=questionHeader] .araujo-logo, header[data-id=questionHeader] .counter{
+	z-index: 2;
+	position: relative;
+	width: 60px;
+	height: 48px;
+}
+
+header[data-id=questionHeader] .araujo-logo{
+	float: left;
+}
+
+header[data-id=questionHeader] .question-category{
+	font: normal 20px/1 'Righteous', cursive;
+	text-align: center;
+	z-index: 2;
+	position: absolute;
+	left: 50%;
+	width: 200px;
+	margin-left: -100px;
+	color: white;
+	margin-top: 5px;
+}
+
+header[data-id=questionHeader] .counter{
+	font: normal 25px/1 'Righteous', cursive;
+	color: white;
+	float: right;
+	margin-top: 10px;
+}
+
+/*.navbar{
 	background-color: #F3F3F3;
 }
 
@@ -27,9 +83,9 @@
 	width: 30px;
 	border-radius: 100%
 }
-
+*/
 .li-nav a{
-	background: #8AACD1 !important;
+	background: #5F5F5F !important;
 	border-color: #617E9E !important;
 }
 
@@ -40,7 +96,7 @@
 	box-sizing: content-box;
   	margin-left: 10px;
   	border: none;
-  	font: normal 30px/1 "Fredoka One", Helvetica, sans-serif;
+  	font: normal 20px/1 "Fredoka One", Helvetica, sans-serif;
   	color: rgba(255,255,255,1);
   	text-align: center;
   	-o-text-overflow: clip;
@@ -270,12 +326,13 @@
 }
 
 .home .menu-panel .img-user img{
+	width: 130px;
+	height: 130px;
 	background-color: white;
 	overflow: hidden;
 	-webkit-border-radius: 100px;
 	-moz-border-radius: 100px;
 	border-radius: 100px;
-	border: 1px solid #DDD;
 }
 
 
@@ -303,4 +360,114 @@
 	filter: grayscale(100%);
 	-webkit-filter: grayscale(100%); /* For Webkit browsers */
 	filter: gray; /* For IE 6 - 9 */
+}
+
+
+/*Estilos del perfil del usuario*/
+.perfil{
+	text-align: center;
+}
+
+.perfil .add-file{
+	display: none;
+}
+
+.perfil .img-user{
+	width: 130px;
+	height: 130px;
+	margin-top: 15px;
+	background-color: white;
+	overflow: hidden;
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	border-radius: 100px;
+	border: 1px solid #DDD;
+}
+
+.perfil .list-group{
+	margin-top: 10px;
+}
+
+.perfil .list-group .list-group-item{
+	background: transparent;
+}
+
+.game-container{
+	text-align: center;
+}
+
+.game-container > img{
+	margin-top: 15px;
+	width: 250px;
+}
+
+.game-container .div-iniciar{
+	margin-top: 40px;
+}
+
+.game-container .div-iniciar .btn-iniciar{
+	background-image: linear-gradient(to bottom, #FFFD65 0%, #FBB23C 100%);
+	color: black;
+	font-weight: bold;
+	width: 150px;
+	height: 50px;
+	font-size: 20px;
+}
+
+/*Estilos del Juego*/
+.game-container .div-question{
+	margin-top: 20px;
+	margin-bottom: 40px;
+	margin-left: 20px;
+	margin-right: 20px;
+	min-height: 140px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	background-color: white;
+	padding: 10px;
+}
+
+/*.game-container .div-answer{
+	margin-top: 15px;
+}*/
+
+.game-container .btn-answer{
+	display: block;
+	margin-top: 15px;
+	margin-left: 20px;
+	margin-right: 20px;
+	word-wrap: break-word;
+	overflow: hidden;
+	white-space: normal;
+}
+
+/*Notificaciones del las preguntas*/
+.question-notify{
+	text-align: center;
+	position: relative;
+	z-index: 2;
+}
+
+.question-notify > img{
+	width: 300px;
+	margin-top: 40px;
+}
+
+.question-notify > div{
+	margin-top: 20px;
+}
+
+.question-notify > div > button{
+	width: 150px;
+	height: 45px;
+	font: normal 20px/1 'Righteous', cursive;
+}
+
+.question-notify > div > button[data-id=btniniciar]{
+	margin-left: 10px;
+}
+
+.question-notify > div > button[data-id=btnsalir]{
+	margin-right: 10px;
 }
