@@ -150,6 +150,13 @@ header[data-id=questionHeader] .counter{
 }
 
 /*Estilos para panel del duelo actual*/
+.player-item-list .player-info .games-info .your-question{
+	float: left;
+}
+.player-item-list .player-info .games-info .total-question{
+	float: right;
+}
+
 .panel-success .panel-heading{
 	background-color: #1EDB16;
 }
