@@ -41,8 +41,7 @@ var ListPanel = Backbone.View.extend({
 						// console.log(value);
 						me.createItem(value);
 					})
-				},
-				
+				}
 			})
 		}
 		
