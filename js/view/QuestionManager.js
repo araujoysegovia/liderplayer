@@ -49,7 +49,7 @@ var QuestionManager = Backbone.View.extend({
 		var beforeIterator = 0;
 		var secNumber = totalSecond;
 		var divQuestion = $("<div></div>").addClass("div-question");
-		var listAnswer = $("<ul></ul>");
+		me.showMessage(divQuestion);
 		this.$el.append(divQuestion);
 		var loader = $(document.body).loaderPanel();
 		loader.show();
@@ -87,7 +87,12 @@ var QuestionManager = Backbone.View.extend({
 					if(count > 100){
 						window.clearInterval(me.interval);
 						$("div.btn", me.$el).unbind("click");
-						me.responseAnswer();
+						$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
+						$("div[data-alert=true]", me.$el).fadeIn(100);
+						me.checkQuestion("no-answer");
+						setTimeout(function(){
+							me.responseAnswer();
+						},1000)
 					}
 
 				},percent)
@@ -110,6 +115,19 @@ var QuestionManager = Backbone.View.extend({
 	    		loader.hide();
 	    	}
 		});
+	},
+
+	showMessage: function(container){
+		var divAlert = $('<div></div>').attr("data-alert", "true")
+		 	.css("position", "absolute")
+		 	.css("top", "0px")
+		 	.css("width", "100%")
+		 	.css("height", "100%")
+		 	.css("display", "none")
+		 	.css("z-index", "1000000");
+		 var msg = $("<span></span>").addClass("alert-msg");
+		 divAlert.append(msg);
+		 container.append(divAlert);
 	},
 	randomAnswer: function(q){
 		var me = this;
@@ -148,8 +166,10 @@ var QuestionManager = Backbone.View.extend({
 			answerId: answerId,
 			token: me.currentToken,
 		};
-		var loader = $(document.body).loaderPanel();
-		loader.show();
+		if(answerId != "no-answer"){
+			var loader = $(document.body).loaderPanel();
+			loader.show();
+		}
 		var config = {
 			headers: header,
 			type: "POST",
@@ -159,20 +179,27 @@ var QuestionManager = Backbone.View.extend({
             dataType: "json",
 			success: function(response, data, c){
 				var bId = $("div[data-id='"+answerId+"']");
-				if(response.success){
-					bId.addClass("btn-success");
+				if(answerId != "no-answer"){
+					if(response.success){
+						$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
+						bId.addClass("btn-success");
+					}
+					else{
+						$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
+						bId.addClass("btn-danger");
+					}
+					$("div[data-alert=true]", me.$el).fadeIn(100);
+					setTimeout(function(){
+						me.responseAnswer();
+					}, 1000);
 				}
-				else{
-					bId.addClass("btn-danger");
-				}
-				setTimeout(function(){
-					me.responseAnswer();
-				}, 1000);
 			},
 			error: function(){
 			},
 			complete: function(){
-				loader.hide();
+				if(answerId != "no-answer"){
+					loader.hide();
+				}
 			}
 		}
 		$.ajax(config);
@@ -221,5 +248,9 @@ var QuestionManager = Backbone.View.extend({
     			Backbone.history.navigate("#home", true);
     		})
 		})
+	},
+
+	sendAnser: function(){
+		
 	}
 })

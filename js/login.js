@@ -21,6 +21,7 @@ $(document).ready(function(){
 				Backbone.history.navigate("home", true);
 			},
 			error: function(xhr, status, error) {
+		    	loader.hide();
 		    	try{
 			    	var obj = jQuery.parseJSON(xhr.responseText);
 	            	$.notify(obj.message, { 
@@ -33,6 +34,7 @@ $(document).ready(function(){
 	            		globalPosition:"top center" 
 	            	});
 		    	}
+
 	    	},
 	    	complete: function(){
 	    		loader.hide();

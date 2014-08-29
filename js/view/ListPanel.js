@@ -38,6 +38,7 @@ var ListPanel = Backbone.View.extend({
 				success: function(collection, response, options){
 					var data = response.data;
 					_.each(data, function(value, key){
+						// console.log(value);
 						me.createItem(value);
 					})
 				},

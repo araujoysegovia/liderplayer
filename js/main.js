@@ -91,7 +91,7 @@ Application.prototype = {
 			collection: new Players(),
 			tpl: "<div class='player-item-list'>"+
 					"<div class='player-img'>"+
-						"<img src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
+						"<img src='"+this.server+"/image/<%= image %>' width='40px' height='40px'/>"+
 					"</div>"+
 					"<div class='player-info'>"+
 						"<h5><%= name %></h5>"+

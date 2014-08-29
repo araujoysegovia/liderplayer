@@ -65,6 +65,9 @@ var routerManager = Backbone.Router.extend({
 		$("header[data-id=mainHeader").css("display", "block");
 		$("header[data-id=questionHeader").css("display", "none");
 		$("div.navbar").css("display", "block");
+		$("#win", "div.navbar").html(this.application.session.getUser().gameInfo.win);
+		$("#loose", "div.navbar").html(this.application.session.getUser().gameInfo.lost);
+		$("#points", "div.navbar").html(this.application.session.getUser().gameInfo.points);
 	},
 
 	simulator: function(){

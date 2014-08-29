@@ -96,7 +96,7 @@ header[data-id=questionHeader] .counter{
 	box-sizing: content-box;
   	margin-left: 10px;
   	border: none;
-  	font: normal 20px/1 "Fredoka One", Helvetica, sans-serif;
+  	font: normal 25px/1 'Righteous', cursive;
   	color: rgba(255,255,255,1);
   	text-align: center;
   	-o-text-overflow: clip;
@@ -118,13 +118,14 @@ header[data-id=questionHeader] .counter{
 }
 
 .li-notify i{
-	background-image: url("../images/icons/notification.png");
+	background-image: url("../images/icons/userPoints.png");
 	background-size: 24px 24px;
 	width: 24px;
 	height: 24px;
 }
 
 .panel-list{
+	border: none;
 	margin-right: 10px;
 	margin-left: 10px;
 	margin-top: 10px;
@@ -132,6 +133,10 @@ header[data-id=questionHeader] .counter{
 
 .panel-list .panel-heading{
 	font-style: italic;
+	color: white;
+	text-shadow: initial;
+	font: normal 20px/1 'Righteous', cursive;
+	text-align: center;
 }
 
 /*Logo del Equipo*/
@@ -145,6 +150,9 @@ header[data-id=questionHeader] .counter{
 }
 
 /*Estilos para panel del duelo actual*/
+.panel-success .panel-heading{
+	background-color: #1EDB16;
+}
 .player-item .player-item-container{
 	padding-bottom: 20px;
 	padding-top: 10px;
@@ -212,6 +220,13 @@ header[data-id=questionHeader] .counter{
 
 
 /*Estilos para el panel de los miembros del equipo*/
+/*fucsia #D12067*/
+/*agua marina #0AEBFF*/
+/*verde #1EDB16*/
+.panel-primary .panel-heading{
+	background-color: #0AEBFF;
+}
+
 .panel-list-list > li{
 	list-style: none;
 	margin-bottom: 10px;
@@ -338,8 +353,8 @@ header[data-id=questionHeader] .counter{
 
 /*Panel de los duelos terminados*/
 .panel-danger>.panel-heading{
-	background-color: #D12020;
-	color: white;
+	background-color: #D12067;
+	/*color: #5F5F5F;*/
 }
 .player-item .item-win{
 	background-color: #DFF0D8;
@@ -389,6 +404,9 @@ header[data-id=questionHeader] .counter{
 }
 
 .perfil .list-group .list-group-item{
+	font: normal 12px/1 "Fredoka One", Helvetica, sans-serif;
+	color: white;
+	border: none;
 	background: transparent;
 }
 
@@ -416,6 +434,7 @@ header[data-id=questionHeader] .counter{
 
 /*Estilos del Juego*/
 .game-container .div-question{
+	position: relative;
 	margin-top: 20px;
 	margin-bottom: 40px;
 	margin-left: 20px;
@@ -426,6 +445,22 @@ header[data-id=questionHeader] .counter{
 	border-radius: 10px;
 	background-color: white;
 	padding: 10px;
+}
+
+.game-container .div-question div[data-alert=true]{
+	margin-top: 38px;
+	/* Chrome y Safari */
+    -webkit-transform: rotate(-13deg);
+    /* Firefox */
+    -moz-transform: rotate(-13deg);
+    /* Opera */
+    -o-transform: rotate(-13deg);
+    /* IE 9 */
+    -ms-transform: rotate(-13deg);
+}
+.div-question .alert-msg{
+	font: normal 50px/1 'Righteous', cursive;
+	font-weight: bold;
 }
 
 /*.game-container .div-answer{
