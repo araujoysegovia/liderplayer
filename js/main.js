@@ -40,7 +40,7 @@ Application.prototype = {
 			container: $("div.body-container"),
 			className: "panel-success",
 			maxHeight: 180,
-			collection: new Players(),
+			//collection: new Players(),
 			tpl: "<div class='player-item-list'>"+
 					"<div class='player-img'>"+
 						"<img src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
@@ -70,7 +70,7 @@ Application.prototype = {
 			container: $("div.body-container"),
 			className: "panel-primary",
 			maxHeight: 215,
-			collection: new Players(),
+			//collection: new Players(),
 			tpl: "<div class='player-item-list'>"+
 					"<div class='player-img'>"+
 						"<img src='"+this.server+"/image/<%= image %>' width='40px' height='40px'/>"+
@@ -96,7 +96,7 @@ Application.prototype = {
 			container: $("div.body-container"),
 			className: "panel-danger",
 			maxHeight: 180,
-			collection: new Players(),
+			//collection: new Players(),
 			tpl: "<div class='player-item'>"+
 					"<div class='player-item-container item-win'>"+
 						"<div class='player-img'>"+
