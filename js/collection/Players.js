@@ -1,6 +1,6 @@
 var Players = Backbone.Collection.extend({
 	url: "/home/player/team",
-	model: Player,
+	model: Player
 	// sync: function(method, model, options) {
 	// 	var me = this;
 	// 	console.log(options);

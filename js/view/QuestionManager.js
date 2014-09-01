@@ -169,7 +169,7 @@ var QuestionManager = Backbone.View.extend({
 		var data = {
 			questionId: me.currentQuestionId,
 			answerId: answerId,
-			token: me.currentToken,
+			token: me.currentToken
 		};
 		if(answerId != "no-answer"){
 			var loader = $(document.body).loaderPanel();

@@ -53,11 +53,9 @@
 	};	
 	
 	$.fn[pluginName] = function (options) {
-		var settings = $.extend({
-            message: "Loading...",
-        }, options );	 	
+		var settings = $.extend({'message': 'Loading...'}, options );	 	
     	return new loaderClass(this, settings);
-	}   
+	};
 	
     $.fn[pluginName].Constructor = loaderClass;	
 	

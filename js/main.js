@@ -4,8 +4,8 @@ $(document).ready(function(){
 		$( "#menu-panel" ).panel( "open" );
 		$( "#menu-panel" ).empty();
 		var list = new List({
-			container: $("div.menu-panel"),
-		})
+			container: $("div.menu-panel")
+		});
 		
 	})
 	
@@ -136,13 +136,13 @@ Application.prototype = {
 	createPerfilPanels: function(){
 		$("div.body-container").empty();
 		var perfil = new Perfil({
-			container: $("div.body-container"),
+			container: $("div.body-container")
 		})
 	},
 	createSimulator: function(){
 		$("div.body-container").empty();
 		var quiestionManager = new QuestionManager({
-			container: $("div.body-container"),
+			container: $("div.body-container")
 		})
 	},
 	createTeamPanels: function(){
@@ -169,7 +169,7 @@ Application.prototype = {
 		return {
 			'x-login': 'Username Username="'+this.session.getUser().email+'", Token="'+this.session.getToken()+'"'
 		};
-	},
+	}
 }
 
 

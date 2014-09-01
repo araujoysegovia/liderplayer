@@ -12,7 +12,7 @@ $(document).ready(function(){
 			url: liderApp.server+"/login",
 			data: {
 				user: form.find("input[type=email]").val(),
-				pass: form.find("input[type=password]").val(),
+				pass: form.find("input[type=password]").val()
 			},
 			//contentType: 'application/json',
             //dataType: "json",
@@ -20,8 +20,7 @@ $(document).ready(function(){
 				liderApp.session.createSession(data);
 				Backbone.history.navigate("home", true);
 			},
-			error: function(xhr, status, error) {
-		    	loader.hide();
+			error: function(xhr, status, error) {		    	
 		    	try{
 			    	var obj = jQuery.parseJSON(xhr.responseText);
 	            	$.notify(obj.message, { 
@@ -29,10 +28,10 @@ $(document).ready(function(){
 	            		globalPosition:"top center" 
 	            	});
 		    	}catch(ex){
-		    		$.notify("Error", { 
-	            		className:"error", 
-	            		globalPosition:"top center" 
-	            	});
+//		    		$.notify("Error", { 
+//	            		className:"error", 
+//	            		globalPosition:"top center" 
+//	            	});
 		    	}
 
 	    	},
@@ -64,10 +63,11 @@ function signinCallback(authResult) {
 				//   .attr("value", authResult['code']));
 		  
 		  // form.submit();
-		  
+		  var loader = $(document.body).loaderPanel();
+		  loader.show();
 		  $.ajax({
 		  	type: "POST",     
-			url: server+"/login-check/google",
+			url: liderApp.server+"/login/google",
 			data: formData,
 			contentType: false,
             processData: false,
@@ -78,25 +78,27 @@ function signinCallback(authResult) {
                     console.log(jqXHR)
                 }
             },
-			success: function(data){
-				console.log(data)
-				if(data["success"] && data.success)
-					window.location = "home";
+            success: function(data){
+				liderApp.session.createSession(data);
+				Backbone.history.navigate("home", true);
 			},
-			error: function(xhr, status, error) {
-		    	loader.hide();
-		    	try{
-			    	var obj = jQuery.parseJSON(xhr.responseText);
-	            	$.notify(obj.message, { 
-	            		className:"error", 
-	            		globalPosition:"top center" 
-	            	});
-		    	}catch(ex){
-		    		$.notify("Error", { 
-	            		className:"error", 
-	            		globalPosition:"top center" 
-	            	});
-		    	}
+			error: function(xhr, status, error) {	
+//				loader.hide();
+//		    	try{
+//			    	var obj = jQuery.parseJSON(xhr.responseText);
+//	            	$.notify(obj.message, { 
+//	            		className:"error", 
+//	            		globalPosition:"top center" 
+//	            	});
+//		    	}catch(ex){
+//		    		$.notify("Error", { 
+//	            		className:"error", 
+//	            		globalPosition:"top center" 
+//	            	});
+//		    	}
+	    	},
+	    	complete: function(){
+	    		loader.hide();
 	    	}
 		});
 		  
