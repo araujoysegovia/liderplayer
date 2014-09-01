@@ -145,6 +145,21 @@ Application.prototype = {
 			container: $("div.body-container"),
 		})
 	},
+	createTeamPanels: function(){
+		$("div.body-container").empty();
+		var teams = new Teams();
+		teams.url = this.server+teams.url;
+		var header = this.getHeaders();
+		teams.fetch({
+			headers: header,
+			success: function(collection, response, options){
+				var data = response.data;
+				_.each(data, function(value, key){
+					console.log(value);
+				})
+			}
+		})
+	},
 
 	disableHeaders: function(){
 		// $("header.header").css("display", "none");

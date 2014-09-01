@@ -139,16 +139,6 @@ header[data-id=questionHeader] .counter{
 	text-align: center;
 }
 
-/*Logo del Equipo*/
-.logo-team{
-	margin-top: 10px;
-	text-align: center;1
-}
-
-.logo-team .logo-img{
-	width: 120px;
-}
-
 /*Estilos para panel del duelo actual*/
 .player-item-list .player-info .games-info .your-question{
 	float: left;
@@ -227,9 +217,6 @@ header[data-id=questionHeader] .counter{
 
 
 /*Estilos para el panel de los miembros del equipo*/
-/*fucsia #D12067*/
-/*agua marina #0AEBFF*/
-/*verde #1EDB16*/
 .panel-primary .panel-heading{
 	background-color: #0AEBFF;
 }
@@ -330,6 +317,9 @@ header[data-id=questionHeader] .counter{
 
 
 /*Panel desplegable a la izquierda donde estarán las opciones de perfil y demas*/
+.nav > li > a:hover{
+	background-color: #5A84B6;
+}
 .home .menu-panel{
 	background-color: #5C7491;
 }
@@ -470,10 +460,6 @@ header[data-id=questionHeader] .counter{
 	font-weight: bold;
 }
 
-/*.game-container .div-answer{
-	margin-top: 15px;
-}*/
-
 .game-container .btn-answer{
 	display: block;
 	margin-top: 15px;
@@ -512,4 +498,12 @@ header[data-id=questionHeader] .counter{
 
 .question-notify > div > button[data-id=btnsalir]{
 	margin-right: 10px;
+}
+
+.question-notify .report-question{
+	margin-top: 50px;
+}
+
+.question-notify .report-question a{
+	color: white;
 }

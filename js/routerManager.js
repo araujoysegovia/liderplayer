@@ -7,7 +7,8 @@ var routerManager = Backbone.Router.extend({
 		"profile": "perfil",
 		"practice": "practice",
 		"simulator": "simulator",
-		"logout": "logout"
+		"logout": "logout",
+		"team": "team"
 	},
 
 	login: function(){
@@ -46,6 +47,17 @@ var routerManager = Backbone.Router.extend({
 	logout: function(){
 		this.application.session.deleteSession();
 		Backbone.history.navigate("login", true);
+	},
+
+	team: function(){
+		if(!this.checkSession()){
+			Backbone.history.navigate("login", true);
+			return;
+		}
+		this.defaultValues();
+		var span = $("span.location-span").html("Equipos");
+		span.css("margin-left", "-"+span.width()/2)
+		this.application.createTeamPanels();
 	},
 
 	practice: function(){
