@@ -18,7 +18,8 @@ $(document).ready(function(){
             //dataType: "json",
 			success: function(data){
 				liderApp.session.createSession(data);
-				Backbone.history.navigate("home", true);
+				window.location = "#home";
+				// Backbone.history.navigate("home", true);
 			},
 			error: function(xhr, status, error) {		    	
 		    	try{

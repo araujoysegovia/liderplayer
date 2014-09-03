@@ -1,12 +1,12 @@
-var ListPanel = Backbone.View.extend({
-	tag:"<div>",
-	baseCls: "panel panel-list",
+var TablePosition = Backbone.View.extend({
+	tag: "<div>",
+	baseCls: "panel panel-default",
 	className: "",
-	title:null,
+	title: null,
 	container: null,
-	list: null,
-	maxHeight: null,
 	collection: null,
+	columnHeader: {},
+	table: null,
 	tpl: null,
 	constructor : function(config) {
 		var self = this;
@@ -16,19 +16,20 @@ var ListPanel = Backbone.View.extend({
 		self.$el = $(self.tag);
 		self.$el.addClass(self.baseCls);
 		self.$el.addClass(self.className);
-		self.list = $("<ul></ul>").addClass("panel-list-list");
+		self.table = $("<table></table>").addClass("table");
 		self.initialize();
 	},
 	initialize: function(){
 		var me = this;
 		var heading = $("<div></div>").addClass("panel-heading").html(this.title);
-		var body = $("<div></div>").addClass("panel-body");
-		if(me.maxHeight){
-			body.css("max-height", me.maxHeight);
-		}
-		body.append(this.list);
-		this.$el.append(heading).append(body);
-		this.render();		
+		var headingTable = $("<thead></thead>");
+		var tr = $("<tr></tr>");
+		_.each(me.columnHeader, function(val, key){
+			var th = $("<th></th>").html(key);
+			tr.append(th);
+		})
+		me.$el.append(heading).append(me.table.append(headingTable.append(tr)));
+
 		if(me.collection){
 			var header = liderApp.getHeaders();
 			me.collection.url = liderApp.server+me.collection.url;
@@ -36,23 +37,18 @@ var ListPanel = Backbone.View.extend({
 				headers: header,
 				success: function(collection, response, options){
 					var data = response.data;
-					_.each(data, function(value, key){
-						me.createItem(value);
-					})
 				}
 			})
 		}
-		
+		me.createItem();
+		me.render();
 	},
 	render: function(){
 		this.container.append(this.$el);
 	},
-	createItem: function(rec){
+	createItem: function(){
 		var me = this;
 		var template = _.template(me.tpl);
-		var html = template(rec);
-		var li = $("<li></li>");
-		li.append(html);
-		this.list.append(li);
+		this.table.append(template);
 	}
 })

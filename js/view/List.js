@@ -27,18 +27,20 @@ var List = Backbone.View.extend({
 			"Perfil": "profile",
 			"Practicar": "practice",
 			"Equipos": "team",
-			"Posiciones Equipos": "teamposition",
-			"Posiciones Jugadores": "playerposition",
+			"Grupos": "group",
+			"Jugadores": "player",
 			"Reglas": "rule",
 			"Ayuda": "help",
-			"Cerrar Sesion": "logout"
+			"Premios": "reward",
+			"Cerrar Sesión": "logout"
 		}
 		_.each(array, function(val, key){
 			if(_.isObject(val)){
 				var value = $("<a></a>").html(val['name']).attr("href", "#");
 				value.click(function(e){
 					e.preventDefault();
-					Backbone.history.navigate("#"+val['route'], true);
+					window.location = "#"+val['route'];
+					// Backbone.history.navigate("#"+val['route'], true);
 					$( "#menu-panel" ).panel( "close" );
 				})
 				var li = me.createItem(value, val['cls']);
@@ -47,7 +49,8 @@ var List = Backbone.View.extend({
 				var value = $("<a></a>").html(key).attr("href", "#");
 				value.click(function(e){
 					e.preventDefault();
-					Backbone.history.navigate("#"+val, true);
+					window.location = "#"+val;
+					// Backbone.history.navigate("#"+val, true);
 					$( "#menu-panel" ).panel( "close" );
 				})
 				me.createItem(value);

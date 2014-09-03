@@ -38,8 +38,8 @@ var QuestionManager = Backbone.View.extend({
 		var me = this;
 		liderApp.disableHeaders();
 		$("div.game-container").empty();
-		$("header[data-id='mainHeader").css("display", "none");
-		$("header[data-id='questionHeader").css("display", "block");
+		$("header[data-id=mainHeader]").css("display", "none");
+		$("header[data-id=questionHeader]").css("display", "block");
 		var progressBar = $(".progress-bar", ".progress-header");
 		var spanCount = $("#question-time-counter");
 		var percent = me.time/100;
@@ -63,7 +63,6 @@ var QuestionManager = Backbone.View.extend({
 			success: function(data){
 				me.currentToken = data.token;
 				var q = data.question[0];
-				console.log(q);
 				var category = q.category.name;
 				$("#questionCategory").html(category);
 				me.currentQuestionId = q.id;
@@ -318,8 +317,9 @@ var QuestionManager = Backbone.View.extend({
 		btnClose.append(spanClose).append(spanClose2);
 		var titleHeading = $("<h4></h4>").addClass("modal-title").html("Reportar Pregunta");
 		modalHeader.append(btnClose).append(titleHeading);
+		var modalBody = $("<div></div>").addClass("modal-body").append(divReasons);
 		var modalContent = $("<div></div>").addClass("modal-content");
-		modal.append(modalDialog.append(modalContent.append(modalHeader).append(divReasons)));
+		modal.append(modalDialog.append(modalContent.append(modalHeader).append(modalBody)));
 		$(document.body).append(modal);
 		modal.modal("show");
 	}
