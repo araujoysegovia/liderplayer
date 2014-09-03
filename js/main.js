@@ -134,6 +134,7 @@ Application.prototype = {
 	},
 
 	createPerfilPanels: function(){
+		console.log("entre a la funcion del main");
 		$("div.body-container").empty();
 		var perfil = new Perfil({
 			container: $("div.body-container")
@@ -147,18 +148,92 @@ Application.prototype = {
 	},
 	createTeamPanels: function(){
 		$("div.body-container").empty();
-		var teams = new Teams();
-		teams.url = this.server+teams.url;
-		var header = this.getHeaders();
-		teams.fetch({
-			headers: header,
-			success: function(collection, response, options){
-				var data = response.data;
-				_.each(data, function(value, key){
-					console.log(value);
-				})
-			}
+		var teams = new ListPanel({
+			title: "Equipo A",
+			container: $("div.body-container"),
+			className: "panel-primary",
+			maxHeight: 215,
+			collection: new Players(),
+			tpl: "<div class='player-item-list'>"+
+					"<div class='player-img'>"+
+						"<img src='"+this.server+"/image/<%= image %>' width='40px' height='40px'/>"+
+					"</div>"+
+					"<div class='player-info'>"+
+						"<h5><%= name %></h5>"+
+						"<h6><span class='glyphicon glyphicon-envelope'></span>  <%= email %></h6>"+
+						"<div class='games-info'>"+
+							"<div class='match-info player-win'>"+
+								"<img src='images/icons/win.png' style='width:20px; margin-top:-7px'/>"+
+								"<span>2</span>"+
+							"</div>"+
+							"<div class='match-info player-loose'>"+
+								"<img src='images/icons/loose.png' style='width:20px; margin-top:-7px;'/>"+
+								"<span>3</span>"+
+							"</div>"+
+						"</div>"+
+					"</div>"+					
+				  "</div>"
 		})
+		// var teams = new Teams();
+		// teams.url = this.server+teams.url;
+		// var header = this.getHeaders();
+		// teams.fetch({
+		// 	headers: header,
+		// 	success: function(collection, response, options){
+		// 		var data = response.data;
+		// 		_.each(data, function(value, key){
+		// 			console.log(value);
+		// 		})
+		// 	},
+		// 	error: function(){
+		// 	}
+		// })
+	},
+
+	createGroups: function(){
+		$("div.body-container").empty();
+		// var teamPosition = new TablePosition({
+		// 	className: "panel-positions",
+		// 	container: $("div.body-container"),
+		// 	title: "Grupo A",
+		// 	columnHeader: {
+		// 		"#": "Numero",
+		// 		"Equipo": "Equipo",
+		// 		"PJ": "Partidos Jugados",
+		// 		"PG": "Partidos Ganados",
+		// 		"PP": "Partidos Perdidos",
+		// 		"P": "Puntos"
+		// 	},
+		// 	// collection: 
+		// 	tpl: "<tr>"+
+		// 			"<td>1</td>"+
+		// 			"<td>Mi Equipo</td>"+
+		// 			"<td>3</td>"+
+		// 			"<td>2</td>"+
+		// 			"<td>1</td>"+
+		// 			"<td>2</td>"+
+		// 		 "</tr>"
+		// })
+	},
+
+	createPlayers: function(){
+		$("div.body-container").empty();
+		// var teamPosition = new TablePosition({
+		// 	className: "panel-positions",
+		// 	container: $("div.body-container"),
+		// 	title: "Grupo A",
+		// 	columnHeader: {
+		// 		"#": "Numero",
+		// 		"Jugador": "Jugador",
+		// 		"P": "Puntos"
+		// 	},
+		// 	// collection: 
+		// 	tpl: "<tr>"+
+		// 			"<td>1</td>"+
+		// 			"<td>Eduardo Escallon</td>"+
+		// 			"<td>2</td>"+
+		// 		 "</tr>"
+		// })
 	},
 
 	disableHeaders: function(){

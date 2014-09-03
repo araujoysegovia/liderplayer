@@ -507,3 +507,19 @@ header[data-id=questionHeader] .counter{
 .question-notify .report-question a{
 	color: white;
 }
+
+
+
+/*Estilos para las posiciones de equipos*/
+.panel-positions{
+	margin-right: 10px;
+	margin-left: 10px;
+	border: none;
+}
+
+.panel-positions .panel-heading{
+	background-color: #25A9F5;
+	color: white;
+	font: normal 20px/1 'Righteous', cursive;
+	text-align: center
+}
