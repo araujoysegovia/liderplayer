@@ -41,7 +41,6 @@ var routerManager = Backbone.Router.extend({
 
 	perfil: function(){
 		if(!this.checkSession()){
-			console.log("me fui para login");
 			window.location = "#login";
 			// Backbone.history.navigate("login", true);
 			return;
@@ -120,6 +119,7 @@ var routerManager = Backbone.Router.extend({
 		this.defaultValues();
 		var span = $("span.location-span").html("Ayuda");
 		span.css("margin-left", "-"+span.width()/2)
+		this.application.createHelp();
 	},
 
 	reward: function(){
@@ -140,6 +140,9 @@ var routerManager = Backbone.Router.extend({
 	},
 
 	defaultValues: function(){
+		if(this.application.session.verificateChangePassword()){
+			this.application.changePasswordModel();
+		}
 		$('div.login').css("display", "none");
 		$('div.home').css("display", "block");
 		$("header[data-id=mainHeader]").css("display", "block");

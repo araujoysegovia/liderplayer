@@ -1,12 +1,12 @@
-var TablePosition = Backbone.View.extend({
+var PanelTable = Backbone.View.extend({
 	tag: "<div>",
 	baseCls: "panel panel-default",
 	className: "",
 	title: null,
+	columns: [],
 	container: null,
-	collection: null,
-	columnHeader: {},
 	table: null,
+	counter: true,
 	tpl: null,
 	constructor : function(config) {
 		var self = this;
@@ -24,31 +24,35 @@ var TablePosition = Backbone.View.extend({
 		var heading = $("<div></div>").addClass("panel-heading").html(this.title);
 		var headingTable = $("<thead></thead>");
 		var tr = $("<tr></tr>");
-		_.each(me.columnHeader, function(val, key){
-			var th = $("<th></th>").html(key);
+		_.each(me.columns, function(val){
+			var th = $("<th></th>").html(val['value']).css("width", val['width']);
 			tr.append(th);
 		})
 		me.$el.append(heading).append(me.table.append(headingTable.append(tr)));
-
-		if(me.collection){
-			var header = liderApp.getHeaders();
-			me.collection.url = liderApp.server+me.collection.url;
-			me.collection.fetch({
-				headers: header,
-				success: function(collection, response, options){
-					var data = response.data;
-				}
-			})
-		}
-		me.createItem();
 		me.render();
 	},
 	render: function(){
 		this.container.append(this.$el);
 	},
-	createItem: function(){
+
+	buildTableBody: function(data){
 		var me = this;
-		var template = _.template(me.tpl);
-		this.table.append(template);
+		var tbody = $("<tbody></tbody>");
+		var count = 1;
+		_.each(data, function(value){
+			var tr = $("<tr></tr>");
+			if(me.counter)
+			{
+				var td = $("<td></td>").html(count);
+				tr.append(td);
+				count ++;
+			}
+			var template = _.template(me.tpl);
+			
+			var html = template(value);
+			tr.append(html);
+			tbody.append(tr);
+		})
+		me.table.append(tbody);
 	}
 })

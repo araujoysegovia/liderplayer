@@ -5,8 +5,9 @@ var QuestionManager = Backbone.View.extend({
 	className: null,
 	currentToken: null,
 	currentQuestionId: null,
+	lastData: null,
 	time: 30000,
-	interval: null,
+	counter: null,
 	constructor : function(config) {
 		var self = this;
 		self._ensureElement();
@@ -43,10 +44,7 @@ var QuestionManager = Backbone.View.extend({
 		var progressBar = $(".progress-bar", ".progress-header");
 		var spanCount = $("#question-time-counter");
 		var percent = me.time/100;
-		
-		var count = 0;
 		var totalSecond = me.time/1000;
-		var beforeIterator = 0;
 		var secNumber = totalSecond;
 		var divQuestion = $("<div></div>").addClass("div-question");
 		me.showMessage(divQuestion);
@@ -61,6 +59,7 @@ var QuestionManager = Backbone.View.extend({
 			//contentType: 'application/json',
             //dataType: "json",
 			success: function(data){
+				me.lastData = JSON.stringify(data);
 				me.currentToken = data.token;
 				var q = data.question[0];
 				var category = q.category.name;
@@ -78,47 +77,69 @@ var QuestionManager = Backbone.View.extend({
 				var h = divHeight - pHeight
 				question.css("margin-top", h+"px");
 				me.randomAnswer(q);
-				me.interval = setInterval(function(){
-					count ++;
-					progressBar.css("width", count+"%");
-					var iterations = parseInt(totalSecond * (count/100));
-					if(iterations != beforeIterator){
-						secNumber --;
-						spanCount.html(secNumber);
-						beforeIterator = iterations;
-					}
-					
-					if(count > 100){
-						window.clearInterval(me.interval);
-						$("div.btn", me.$el).unbind("click");
-						$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
-						$("div[data-alert=true]", me.$el).fadeIn(100);
-						me.checkQuestion("no-answer");
-						setTimeout(function(){
-							me.responseAnswer();
-						},1000)
-					}
+				me.counter = new Worker("js/QuestionCounter.js");
+				me.counter.addEventListener('message', function(e) {
+					var data = e.data;
+					switch (data.cmd) {
+				  		case "time":
+				  			spanCount.html(data.value+"'");
+				  			break;
+				  		case "timeout":
+				  			me.checkQuestion("no-answer");
+				  			me.showTimeExpireMessage();
+				  			setTimeout(function(){
+								me.responseAnswer();
+							},1000)
+				  			break;
+				  		case "pbar":
+				  			progressBar.css("width", data.value+"%");
+				  			break;
+				  		case "stop":
+				  			me.counter.terminate();
+				  			break;
+				  	}
+				}, false);
+				me.counter.postMessage({'cmd': 'start', "totalSecond": totalSecond, "percent": percent});
 
-				},percent)
 			},
 			error: function(xhr, status, error) {
 		    	try{
 			    	var obj = jQuery.parseJSON(xhr.responseText);
-	            	$.notify(obj.message, { 
-	            		className:"error", 
-	            		globalPosition:"top center" 
-	            	});
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
 		    	}catch(ex){
-		    		$.notify("Error", { 
-	            		className:"error", 
-	            		globalPosition:"top center" 
-	            	});
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
 		    	}
 	    	},
 	    	complete: function(){
 	    		loader.hide();
 	    	}
 		});
+	},
+
+	showTimeExpireMessage: function(){
+		var me = this;
+		$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
+		$("div[data-alert=true]", me.$el).fadeIn(100);
+	},
+
+	showSuccessMessage: function(answerId){
+		var bId = $("div[data-id='"+answerId+"']");
+		$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
+		bId.addClass("btn-success");
+	},
+
+	showWrongMessage: function(answerId){
+		var bId = $("div[data-id='"+answerId+"']");
+		$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
+		bId.addClass("btn-danger");
 	},
 
 	showMessage: function(container){
@@ -154,7 +175,11 @@ var QuestionManager = Backbone.View.extend({
 
 			me.$el.append(button);
 		}
+		if(me.$el.children("button").length > 4){
+			liderApp.reportError("Mas de 4 preguntas", me.lastData);
+		}
 	},
+
 	addAnswer: function(answer){
 		var button = $("<div></div>").attr("data-id", answer['id']).html(answer['answer']).addClass("btn btn-default btn-answer");
 		return button;
@@ -162,7 +187,7 @@ var QuestionManager = Backbone.View.extend({
 	},
 	checkQuestion: function(answerId){
 		var me = this;
-		window.clearInterval(me.interval);
+		me.counter.postMessage({'cmd': 'stop'});
 		$("div.btn", me.$el).unbind("click");
 		var header = liderApp.getHeaders();
 		var data = {
@@ -182,15 +207,18 @@ var QuestionManager = Backbone.View.extend({
 			contentType: 'application/json',
             dataType: "json",
 			success: function(response, data, c){
-				var bId = $("div[data-id='"+answerId+"']");
+				
 				if(answerId != "no-answer"){
 					if(response.success){
-						$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
-						bId.addClass("btn-success");
+						me.showSuccessMessage(answerId)
 					}
 					else{
-						$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
-						bId.addClass("btn-danger");
+						if(response.code == "02"){
+							me.showWrongMessage(answerId);
+						}
+						else if(response.code == "01"){
+							me.showTimeExpireMessage();
+						}
 					}
 					$("div[data-alert=true]", me.$el).fadeIn(100);
 					setTimeout(function(){
@@ -304,7 +332,24 @@ var QuestionManager = Backbone.View.extend({
 		            success:function(response, data, c){
 		            	modal.modal("hide");
 		            	$("div.report-question").css("display", "none");
-		            }
+		            },
+		            error: function(xhr, status, error) {
+				    	try{
+					    	var obj = jQuery.parseJSON(xhr.responseText);
+					    	var n = noty({
+					    		text: obj.message,
+					    		timeout: 1000,
+					    		type: "error"
+					    	});
+				    	}catch(ex){
+				    		var n = noty({
+					    		text: "Error",
+					    		timeout: 1000,
+					    		type: "error"
+					    	});
+				    	}
+
+			    	},
 				}
 				$.ajax(config)
 			})
