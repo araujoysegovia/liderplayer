@@ -1,0 +1,1 @@
+var Statistic = Backbone.Model.extend({})

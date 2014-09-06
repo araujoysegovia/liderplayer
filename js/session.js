@@ -9,10 +9,13 @@ Session.prototype = {
 		var me = this;
 		config = config || {};
 		_.extend(this, config);
+		_.extend(me, Backbone.Events);
 	},
 
 	createSession: function(mod){
+		var me = this;
 		var jsonModel = JSON.stringify(mod);
+		me.trigger("createSession", mod);
 		sessionStorage[this.sessionName] = jsonModel;
 	},
 
@@ -38,5 +41,23 @@ Session.prototype = {
 
 	isCreated: function(){
 		return sessionStorage[this.sessionName] ? true : false;
+	},
+	verificateChangePassword: function(){
+		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		return ses.user.changePassword;
+	},
+	setChangePassword: function(){
+		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		ses.user.changePassword = false;
+		this.updateSession(ses.user);
+	},
+	getEffectiveness: function(){
+		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		return ses.user.effectiveness;
+	},
+	setEffectiveness: function(effectiveness){
+		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		ses.user.effectiveness = effectiveness;
+		this.updateSession(ses.user);
 	}
 }

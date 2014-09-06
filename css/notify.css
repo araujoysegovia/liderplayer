@@ -1,0 +1,59 @@
+.k-state-selected, .k-state-selected:link, .k-state-selected:visited, .k-list>.k-state-selected, .k-list>.k-state-highlight, .k-panel>.k-state-selected, .k-ghost-splitbar-vertical, .k-ghost-splitbar-horizontal, .k-draghandle.k-state-selected:hover, .k-scheduler .k-scheduler-toolbar .k-state-selected, .k-scheduler .k-today.k-state-selected, .k-marquee-color{
+	color: #FFF;
+	background-color: rgb(173, 209, 78);
+	border-color: rgb(173, 209, 78);
+}
+
+/* Info template */
+.k-notification-info.k-group {
+    background: rgba(0,0,0,.7);
+    color: #fff;
+}
+
+
+ /* Error template */
+.k-notification-error.k-group {
+    background: rgba(255,0,0,.7);
+    color: #ffffff;
+}
+.error-notification {
+    width: 300px;
+    height: 100px;
+    font-size: 12px;
+}
+.error-notification h3 {
+	font-weight: bold;
+	margin-top: 0px;
+	margin-bottom: 0px;
+    font-size: 1em;
+    padding: 32px 10px 5px;
+}
+.error-notification img {
+    float: left;
+    margin: 30px 15px 30px 30px;
+}
+
+
+/* Success template */
+.k-notification-success.k-group {
+    background: rgba(0,153,0,.7);
+    color: #fff;
+}
+
+.success-notification {
+    width: 280px;
+    height: 100px;
+    padding: 0 10px;
+    font-size: 12px;
+}
+.success-notification h3 {
+	font-weight: normal;
+	margin-top: 0px;
+	margin-bottom: 0px;
+    font-size: 12px;
+    padding: 32px 10px 5px;
+}
+.success-notification img {
+    float: left;
+    margin: 30px 15px 30px 30px;
+}

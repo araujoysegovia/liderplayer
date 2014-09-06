@@ -523,3 +523,54 @@ header[data-id=questionHeader] .counter{
 	font: normal 20px/1 'Righteous', cursive;
 	text-align: center
 }
+
+.div-text{
+	margin-left: 10px;
+	margin-right: 10px;
+	font: normal 20px/1 "Fredoka One", Helvetica, sans-serif;
+}
+
+.jchartfx_gauge .TitleSafe {
+    font-family: Arial;
+    font-size: 8pt;
+    fill: #2F912F;
+}
+
+.jchartfx_gauge .TitleWarning {
+    font-family: Arial;
+    font-size: 8pt;
+    fill: #FDB023;
+}
+
+.jchartfx_gauge .TitleDanger {
+    font-family: Arial;
+    font-size: 8pt;
+    fill: #F43131;
+}
+
+.jchartfx_gauge .TickMajor {
+    fill: #A0A0A0;
+    stroke: #A0A0A0;
+}
+
+.jchartfx_gauge .TickMedium {
+    fill: #A0A0A0;
+    stroke: #A0A0A0;
+}
+
+.chart-container {
+    background: transparent url("../images/gauge-container.png") no-repeat 50% 50%;
+    text-align: center;
+    margin: 0 0 30px 50px;
+    background-size: 211;
+	background-color: white;
+	border-radius: 100%;
+	text-align: center;
+}
+
+div.body-container center{
+	margin-bottom: 25px;
+	color: white;
+	margin-top: -20px;
+	font-size: 12px
+}

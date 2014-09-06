@@ -2,6 +2,7 @@ var Perfil = Backbone.View.extend({
 	tag: "<div>",
 	container: null,
 	baseCls: "perfil",
+	panelTable: null,
 	constructor : function(config) {
 		var self = this;
 		self._ensureElement();
@@ -12,6 +13,26 @@ var Perfil = Backbone.View.extend({
 		self.initialize();
 	},
 	initialize: function(){
+		var me = this;
+		me.setInfoProfile();
+		me.buildTable();
+		var header = liderApp.getHeaders();
+		var statistics = new Statistics();
+		statistics.url = liderApp.server+statistics.url;
+		statistics.fetch({
+				headers: header,
+				success: function(collection, response, options){
+					var data = response.data;
+					me.insertInfoInTable(response);
+				}
+			})
+		me.render();
+	},
+	render: function(){
+		this.container.append(this.$el);
+	},
+
+	setInfoProfile: function(){
 		var me = this;
 		var user = liderApp.session.getUser();
 		var ul = $("<ul></ul>").addClass("list-group");
@@ -32,7 +53,6 @@ var Perfil = Backbone.View.extend({
 		})
 		input.change(function(){
 			var filename = $(this).val();
-			console.log(filename);
 			if(filename){
 				var formdata = new FormData();
 				formdata.append("imagen", $(this).get(0).files[0]);
@@ -54,17 +74,67 @@ var Perfil = Backbone.View.extend({
 
 						console.info("Perfil Actualizado");
 					},
-					"error": function(){
+					error: function(xhr, status, error) {
+				    	try{
+					    	var obj = jQuery.parseJSON(xhr.responseText);
+					    	var n = noty({
+					    		text: obj.message,
+					    		timeout: 1000,
+					    		type: "error"
+					    	});
+				    	}catch(ex){
+				    		var n = noty({
+					    		text: "Error",
+					    		timeout: 1000,
+					    		type: "error"
+					    	});
+				    	}
 
-					}
+			    	},
 				}
 				$.ajax(config);
 			}
 		})
-		me.render();
 	},
-	render: function(){
-		this.container.append(this.$el);
+	buildTable: function(){
+		var me = this;
+		me.panelTable = $("<div></div>").addClass("panel panel-default panel-positions");
+		var headPanel = $("<div></div>").addClass("panel-heading").html("Estadisticas de juego");
+		var table = $("<table></table>").addClass("table table-bordered");
+		var trHead = $("<tr></tr>");
+		var columns = [{
+			"name": "category",
+			"value": "Categoria",
+			"width": "60%"
+		},
+		{
+			"name": "practice",
+			"value": "Practica",
+		},
+		{
+			"name": "duel",
+			"value": "Duelos",
+		}];
+		_.each(columns, function(value){
+			var th = $("<th></th>").html(value['value']).css("width", value['width']).css("text-align", "center");
+			trHead.append(th);
+		})
+		var headTable = $("<thead></thead>").append(trHead);
+		me.panelTable.append(headPanel).append(table.append(headTable));
+		me.$el.append(me.panelTable);
+	},
+	insertInfoInTable: function(info){
+		var me = this;
+		var bodyTable = $("<tbody></tbody>");
+		_.each(info, function(value, key){
+			var tr = $("<tr></tr>");
+			var tdCategory = $("<td></td>").html(key).css("vertical-align", "middle");
+			var tdPractice = $("<td></td>").html("<h3>"+value.practice.effectiveness.toFixed(2)+"%</h3><p>"+value.practice.win+"/"+value.practice.count+"</p>").css("text-align", "center");
+			var tdTournament = $("<td></td>").html("<h3>"+value.tournament.effectiveness.toFixed(2)+"%</h3><p>"+value.tournament.win+"/"+value.tournament.count+"</p>").css("text-align", "center");
+			tr.append(tdCategory).append(tdPractice).append(tdTournament);
+			bodyTable.append(tr);
+		})
+		me.panelTable.find("table").append(bodyTable);
 	},
 	changePassword: function(){
 		var form = $("<form></form>").attr("role", "form").addClass("form-horizontal");
@@ -128,13 +198,31 @@ var Perfil = Backbone.View.extend({
 					var header = liderApp.getHeaders();
 					var config = {
 						headers: header,
-						type: "POST",
-						url: liderApp.server+"/home/user",
+						type: "PUT",
+						url: liderApp.server+"/home/player/pass",
 						data: JSON.stringify(data),
 						contentType: 'application/json',
 			            dataType: "json",
 			            success:function(response, data, c){
-			            }
+			            	modal.modal("hide");
+			            },
+			            error: function(xhr, status, error) {
+					    	try{
+						    	var obj = jQuery.parseJSON(xhr.responseText);
+						    	var n = noty({
+						    		text: obj.message,
+						    		timeout: 1000,
+						    		type: "error"
+						    	});
+					    	}catch(ex){
+					    		var n = noty({
+						    		text: "Error",
+						    		timeout: 1000,
+						    		type: "error"
+						    	});
+					    	}
+
+				    	},
 					}
 					$.ajax(config)
 				}
