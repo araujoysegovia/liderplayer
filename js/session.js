@@ -53,11 +53,24 @@ Session.prototype = {
 	},
 	getEffectiveness: function(){
 		var ses =  JSON.parse(sessionStorage[this.sessionName]);
-		return ses.user.effectiveness;
+		if(ses.user.countEffectiveness > 0){
+			return (ses.user.winEffectiveness*100)/ses.user.countEffectiveness
+		}
+		return 0;
 	},
-	setEffectiveness: function(effectiveness){
+	addQuestion: function(ok){
 		var ses =  JSON.parse(sessionStorage[this.sessionName]);
-		ses.user.effectiveness = effectiveness;
+		if(!ses.user.countEffectiveness){
+			ses.user.countEffectiveness = 0;	
+		}
+		ses.user.countEffectiveness ++;	
+		if(ok){
+			if(!ses.user.winEffectiveness){
+				ses.user.winEffectiveness = 0;	
+			}
+			ses.user.winEffectiveness ++;
+		}
 		this.updateSession(ses.user);
+		
 	}
 }

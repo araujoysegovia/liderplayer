@@ -211,6 +211,7 @@ var QuestionManager = Backbone.View.extend({
 				if(answerId != "no-answer"){
 					if(response.success){
 						me.showSuccessMessage(answerId)
+						liderApp.session.addQuestion(true);
 					}
 					else{
 						if(response.code == "02"){
@@ -219,6 +220,7 @@ var QuestionManager = Backbone.View.extend({
 						else if(response.code == "01"){
 							me.showTimeExpireMessage();
 						}
+						liderApp.session.addQuestion(false);
 					}
 					$("div[data-alert=true]", me.$el).fadeIn(100);
 					setTimeout(function(){
