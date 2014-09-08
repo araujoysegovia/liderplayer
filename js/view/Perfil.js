@@ -36,7 +36,7 @@ var Perfil = Backbone.View.extend({
 		var me = this;
 		var user = liderApp.session.getUser();
 		var ul = $("<ul></ul>").addClass("list-group");
-		var img = $("<img/>").attr("src", liderApp.server+"/image/"+user.image).addClass("img-user");
+		var img = $("<img/>").attr("src", liderApp.server+"/image/"+user.image+"?width=130&height=130").addClass("img-user");
 		var name = $("<li></li>").append($("<label></label>").html(user.name+" "+user.latname)).addClass("list-group-item");
 		var email = $("<li></li>").append($("<label></label>").html(user.email)).addClass("list-group-item");
 		var team = $("<li></li>").append($("<label></label>").html(user.team.name)).addClass("list-group-item");
