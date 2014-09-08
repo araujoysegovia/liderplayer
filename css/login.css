@@ -56,8 +56,14 @@ body > div[data-role=page]{
 .login .login-form > form > span#signinButton{
 	margin-top: 20px;
 	display: inline-block;
-	background: #DD4B39;
+	/*background: #DD4B39;*/
 	color: white;
 	width: 150px;
-	border-radius: 5px;
+	border-radius: 50px;
+}
+
+.login .error-message{
+	margin-left: 30px;
+	font: normal 25px/1 "Fredoka One", Helvetica, sans-serif;
+	color: white;
 }

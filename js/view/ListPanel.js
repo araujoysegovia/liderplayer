@@ -21,8 +21,7 @@ var ListPanel = Backbone.View.extend({
 	},
 	initialize: function(){
 		var me = this;
-		var heading = $("<div></div>").addClass("panel-heading");
-		heading.html(this.title);
+		var heading = $("<div></div>").addClass("panel-heading").html(this.title);
 		var body = $("<div></div>").addClass("panel-body");
 		if(me.maxHeight){
 			body.css("max-height", me.maxHeight);
@@ -38,7 +37,6 @@ var ListPanel = Backbone.View.extend({
 				success: function(collection, response, options){
 					var data = response.data;
 					_.each(data, function(value, key){
-						// console.log(value);
 						me.createItem(value);
 					})
 				}

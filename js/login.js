@@ -18,20 +18,23 @@ $(document).ready(function(){
             //dataType: "json",
 			success: function(data){
 				liderApp.session.createSession(data);
-				Backbone.history.navigate("home", true);
+				window.location = "#home";
+				// Backbone.history.navigate("home", true);
 			},
-			error: function(xhr, status, error) {		    	
+			error: function(xhr, status, error) {
 		    	try{
 			    	var obj = jQuery.parseJSON(xhr.responseText);
-	            	$.notify(obj.message, { 
-	            		className:"error", 
-	            		globalPosition:"top center" 
-	            	});
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
 		    	}catch(ex){
-//		    		$.notify("Error", { 
-//	            		className:"error", 
-//	            		globalPosition:"top center" 
-//	            	});
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
 		    	}
 
 	    	},
