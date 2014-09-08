@@ -53,22 +53,22 @@ Session.prototype = {
 	},
 	getEffectiveness: function(){
 		var ses =  JSON.parse(sessionStorage[this.sessionName]);
-		if(ses.user.countEffectiveness > 0){
-			return (ses.user.winEffectiveness*100)/ses.user.countEffectiveness
+		if(ses.user.counteffectiveness > 0){
+			return (ses.user.wineffectiveness*100)/ses.user.counteffectiveness
 		}
 		return 0;
 	},
 	addQuestion: function(ok){
 		var ses =  JSON.parse(sessionStorage[this.sessionName]);
-		if(!ses.user.countEffectiveness){
-			ses.user.countEffectiveness = 0;	
+		if(!ses.user.counteffectiveness){
+			ses.user.counteffectiveness = 0;	
 		}
 		ses.user.countEffectiveness ++;	
 		if(ok){
-			if(!ses.user.winEffectiveness){
-				ses.user.winEffectiveness = 0;	
+			if(!ses.user.wineffectiveness){
+				ses.user.wineffectiveness = 0;	
 			}
-			ses.user.winEffectiveness ++;
+			ses.user.wineffectiveness ++;
 		}
 		this.updateSession(ses.user);
 		
