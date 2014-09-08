@@ -244,5 +244,8 @@ var Perfil = Backbone.View.extend({
 		modal.append(modalDialog.append(modalContent.append(modalHeader).append(modalBody).append(modalFooter)));
 		$(document.body).append(modal);
 		modal.modal("show");
+		modal.on("hidden.bs.modal", function(){
+    		modal.remove();
+    	})
 	}
 })
