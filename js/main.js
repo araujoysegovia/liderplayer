@@ -27,8 +27,8 @@ Application.prototype = {
 	session: null,
 	router: null,
 	// server: "http://10.101.1.46/lider/web/app_dev.php",
-	// server: "http://10.101.1.135/lider/web/app_dev.php",
-	server: "http://soylider.sifinca.net",
+	server: "http://10.101.1.135/lider/web/app_dev.php",
+	// server: "http://soylider.sifinca.net",
 	constructor: function(){
 		var me = this;
 		// this.editCollections();
@@ -208,7 +208,7 @@ Application.prototype = {
 			collection: new PlayerTeam(),
 			tpl: "<div class='player-item-list'>"+
 					"<div class='player-img'>"+
-						"<img src='"+this.server+"/image/<%= image %>' width='40px' height='40px'/>"+
+						"<img src='"+this.server+"/image/<%= image %>?width=40&height=40' width='40px' height='40px'/>"+
 					"</div>"+
 					"<div class='player-info'>"+
 						"<h5><%= name %></h5>"+
@@ -237,7 +237,7 @@ Application.prototype = {
 			tpl: "<div class='player-item'>"+
 					"<div class='player-item-container item-win'>"+
 						"<div class='player-img'>"+
-							"<img src='"+this.server+"/image/"+this.session.getUser().image+"' width='40px' height='40px' />"+
+							"<img src='"+this.server+"/image/"+this.session.getUser().image+"?width=40&height=40' width='40px' height='40px' />"+
 						"</div>"+
 						"<div class='player-info'>"+
 							"<h5><%= name %></h5>"+

@@ -69,7 +69,7 @@ var QuestionManager = Backbone.View.extend({
 				var d = $("<div></div>").append(question);
 				divQuestion.append(d);
 				if(q.image){
-					var imageQuestion = $("<img />").attr("src", liderApp.server+"/image/"+q.image).css("width", "80px").css("height", "80px");
+					var imageQuestion = $("<img />").attr("src", liderApp.server+"/image/"+q.image+"?width=80&height=80").css("width", "80px").css("height", "80px");
 					divQuestion.append(imageQuestion);
 				}
 				var divHeight = divQuestion.height()/2;
