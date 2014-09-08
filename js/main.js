@@ -139,6 +139,9 @@ Application.prototype = {
 			keyboard: false,
 			show: true
 		});
+		modal.on("hidden.bs.modal", function(){
+    		modal.remove();
+    	})
 
 	},
 	createHomePanels: function(){

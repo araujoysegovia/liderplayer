@@ -275,11 +275,13 @@ var QuestionManager = Backbone.View.extend({
     	buttonStart.click(function(e){
     		divAns.fadeOut(500, function(){
     			me.buildQuestion();
+    			divAns.remove();
     		})
 		})
 		buttonExit.click(function(e){
     		divAns.fadeOut(500, function(){
     			Backbone.history.navigate("#home", true);
+    			divAns.remove();
     		})
 		})
 		reportq.click(function(){
@@ -367,5 +369,8 @@ var QuestionManager = Backbone.View.extend({
 		modal.append(modalDialog.append(modalContent.append(modalHeader).append(modalBody)));
 		$(document.body).append(modal);
 		modal.modal("show");
+		modal.on("hidden.bs.modal", function(){
+    		modal.remove();
+    	})
 	}
 })
