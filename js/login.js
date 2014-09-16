@@ -67,7 +67,7 @@ function signinCallback(authResult) {
 		  
 		  // form.submit();
 		  var loader = $(document.body).loaderPanel();
-		  loader.show();
+		  loader.show();		  
 		  $.ajax({
 		  	type: "POST",     
 			url: liderApp.server+"/login/google",
@@ -86,7 +86,7 @@ function signinCallback(authResult) {
 				Backbone.history.navigate("home", true);
 			},
 			error: function(xhr, status, error) {	
-//				loader.hide();
+//				loader.hide();				
 //		    	try{
 //			    	var obj = jQuery.parseJSON(xhr.responseText);
 //	            	$.notify(obj.message, { 
