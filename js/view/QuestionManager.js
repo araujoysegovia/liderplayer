@@ -6,7 +6,8 @@ var QuestionManager = Backbone.View.extend({
 	currentToken: null,
 	currentQuestionId: null,
 	lastData: null,
-	time: 30000,
+	duel: false,
+	time: null,
 	counter: null,
 	constructor : function(config) {
 		var self = this;
@@ -20,6 +21,33 @@ var QuestionManager = Backbone.View.extend({
 	},
 	initialize: function(){
 		var me = this;
+		if(me.duel){
+			me.initializeDuel();
+		}else{
+			me.initializePractice();
+		}
+		this.render();
+	},
+
+	initializeDuel: function(){
+		var me = this;
+		var divButtons = $("<div></div>").addClass("div-iniciar");
+		var buttonStart = $("<button></button>").html("Empezar").addClass("btn btn-primary btn-iniciar");
+		var divDuel = $("<div></div>").addClass("player-item-container");
+		var divUser = $("<div></div>").addClass("'player-img");
+		var userImg = $("<img />").attr("src", this.server+"/image/"+this.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+		divUser.append(userImg);
+		// var divVs
+		divButtons.append(buttonStart);
+		buttonStart.click(function(e){
+			me.buildQuestion();
+		})
+		var img = $("<img />").attr("src", "images/lider-logo.png");
+		me.$el.append(img).append(divButtons);
+	},
+
+	initializePractice: function(){
+		var me = this;
 		var divButtons = $("<div></div>").addClass("div-iniciar");
 		var buttonStart = $("<button></button>").html("Empezar").addClass("btn btn-primary btn-iniciar");
 		divButtons.append(buttonStart);
@@ -28,7 +56,6 @@ var QuestionManager = Backbone.View.extend({
 		})
 		var img = $("<img />").attr("src", "images/lider-logo.png");
 		me.$el.append(img).append(divButtons);
-		this.render();
 	},
 
 	render: function(){

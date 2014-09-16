@@ -13,8 +13,7 @@ $(document).ready(function(){
 	}catch(e){
 		console.error(e);
 	}
-	
-
+	// console.log(liderApp.session.getConfig().timeQuestionPractice);
 	// liderApp.session.deleteSession();
 })
 // var server = "http://soylider.sifinca.net/lider/web/app.php";
@@ -28,7 +27,8 @@ Application.prototype = {
 	router: null,
 	// server: "http://10.101.1.46/lider/web/app_dev.php",
 	// server: "http://10.101.1.135/lider/web/app_dev.php",
-	server: "http://soylider.sifinca.net",
+	server: "http://localhost/lider/web/app_dev.php",
+	// server: "http://soylider.sifinca.net",
 	constructor: function(){
 		var me = this;
 		// this.editCollections();
@@ -145,6 +145,7 @@ Application.prototype = {
 
 	},
 	createHomePanels: function(){
+		var me = this;
 		$("div.body-container").empty();
 		var chartContainer = $("<div></div>").addClass("chart-container").css({
 			width: "200px",
@@ -162,10 +163,40 @@ Application.prototype = {
 		});
 		chartContainer.append(cont);
 
-		$("div.body-container").append(chartContainer);
-		$("div.body-container").append($("<center>").html((this.session.getEffectiveness().toFixed(2) || 0) + "% de eficacia"));
+		var divChart = $("<div>");
+		divChart.append(chartContainer);
+
+		$("div.body-container").append(divChart);
 		chartContainer.css("margin-left", "-" + (chartContainer.width()/2) + "px");
-		this.drawChart(cont, this.session.getEffectiveness() || 0);
+		$.ajax({
+			type: "GET",
+		  	headers: this.getHeaders(),
+			url: liderApp.server+"/home/player/generalstatistics",
+			//contentType: 'application/json',
+            //dataType: "json",
+			success: function(data){
+				total = data.effectiveness || 0;
+				divChart.append($("<center>").html(total.toFixed(2) + "% de eficacia"));
+				me.drawChart(cont, total);
+			},
+			error: function(xhr, status, error) {
+		    	try{
+			    	var obj = jQuery.parseJSON(xhr.responseText);
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}catch(ex){
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}
+	    	},
+		})
+		
 		
 
 		// this.changePasswordModel();
@@ -279,6 +310,13 @@ Application.prototype = {
 	createSimulator: function(){
 		$("div.body-container").empty();
 		var quiestionManager = new QuestionManager({
+			container: $("div.body-container"),
+			time: this.session.getConfig().timeQuestionPractice*1000
+		})
+	},
+	createDuel: function(){
+		$("div.body-container").empty();
+		var quiestionManager = new QuestionManager({
 			container: $("div.body-container")
 		})
 	},
@@ -289,20 +327,6 @@ Application.prototype = {
 			collection: new Teams(),
 			container: $("div.body-container")
 		})
-		// var teams = new Teams();
-		// teams.url = this.server+teams.url;
-		// var header = this.getHeaders();
-		// teams.fetch({
-		// 	headers: header,
-		// 	success: function(collection, response, options){
-		// 		var data = response.data;
-		// 		_.each(data, function(value, key){
-		// 			console.log(value);
-		// 		})
-		// 	},
-		// 	error: function(){
-		// 	}
-		// })
 	},
 
 	createGroups: function(){
