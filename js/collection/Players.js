@@ -1,4 +1,4 @@
 var Players = Backbone.Collection.extend({
-	url: "/home/player/",
+	url: "/home/player/positions",
 	model: Player
 })
