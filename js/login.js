@@ -23,6 +23,7 @@ $(document).ready(function(){
 			},
 			error: function(xhr, status, error) {
 		    	try{
+		    		liderApp.session.deleteSession();
 			    	var obj = jQuery.parseJSON(xhr.responseText);
 			    	var n = noty({
 			    		text: obj.message,
@@ -30,6 +31,7 @@ $(document).ready(function(){
 			    		type: "error"
 			    	});
 		    	}catch(ex){
+
 		    		var n = noty({
 			    		text: "Error",
 			    		timeout: 1000,

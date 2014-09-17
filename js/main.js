@@ -13,8 +13,7 @@ $(document).ready(function(){
 	}catch(e){
 		console.error(e);
 	}
-	
-
+	// console.log(liderApp.session.getConfig().timeQuestionPractice);
 	// liderApp.session.deleteSession();
 })
 // var server = "http://soylider.sifinca.net/lider/web/app.php";
@@ -27,8 +26,14 @@ Application.prototype = {
 	session: null,
 	router: null,
 	// server: "http://10.101.1.46/lider/web/app_dev.php",
+<<<<<<< HEAD
 	server: "http://10.101.1.135/lider/web/app_dev.php",
 	//server: "http://soylider.sifinca.net",
+=======
+	// server: "http://10.101.1.135/lider/web/app_dev.php",
+	// server: "http://localhost/lider/web/app_dev.php",
+	server: "http://soylider.sifinca.net",
+>>>>>>> f401418251e5050d11685eb6202a44e4805a6b03
 	constructor: function(){
 		var me = this;
 		// this.editCollections();
@@ -145,6 +150,7 @@ Application.prototype = {
 
 	},
 	createHomePanels: function(){
+		var me = this;
 		$("div.body-container").empty();
 		var chartContainer = $("<div></div>").addClass("chart-container").css({
 			width: "200px",
@@ -162,10 +168,40 @@ Application.prototype = {
 		});
 		chartContainer.append(cont);
 
-		$("div.body-container").append(chartContainer);
-		$("div.body-container").append($("<center>").html((this.session.getEffectiveness().toFixed(2) || 0) + "% de eficacia"));
+		var divChart = $("<div>");
+		divChart.append(chartContainer);
+
+		$("div.body-container").append(divChart);
 		chartContainer.css("margin-left", "-" + (chartContainer.width()/2) + "px");
-		this.drawChart(cont, this.session.getEffectiveness() || 0);
+		$.ajax({
+			type: "GET",
+		  	headers: this.getHeaders(),
+			url: liderApp.server+"/home/player/generalstatistics",
+			//contentType: 'application/json',
+            //dataType: "json",
+			success: function(data){
+				total = data.effectiveness || 0;
+				divChart.append($("<center>").html(total.toFixed(2) + "% de eficacia"));
+				me.drawChart(cont, total);
+			},
+			error: function(xhr, status, error) {
+		    	try{
+			    	var obj = jQuery.parseJSON(xhr.responseText);
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}catch(ex){
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}
+	    	},
+		})
+		
 		
 
 		// this.changePasswordModel();
@@ -208,7 +244,7 @@ Application.prototype = {
 			collection: new PlayerTeam(),
 			tpl: "<div class='player-item-list'>"+
 					"<div class='player-img'>"+
-						"<img src='"+this.server+"/image/<%= image %>' width='40px' height='40px'/>"+
+						"<img src='"+this.server+"/image/<%= image %>?width=40&height=40' width='40px' height='40px'/>"+
 					"</div>"+
 					"<div class='player-info'>"+
 						"<h5><%= name %></h5>"+
@@ -237,7 +273,7 @@ Application.prototype = {
 			tpl: "<div class='player-item'>"+
 					"<div class='player-item-container item-win'>"+
 						"<div class='player-img'>"+
-							"<img src='"+this.server+"/image/"+this.session.getUser().image+"' width='40px' height='40px' />"+
+							"<img src='"+this.server+"/image/"+this.session.getUser().image+"?width=40&height=40' width='40px' height='40px' />"+
 						"</div>"+
 						"<div class='player-info'>"+
 							"<h5><%= name %></h5>"+
@@ -279,6 +315,13 @@ Application.prototype = {
 	createSimulator: function(){
 		$("div.body-container").empty();
 		var quiestionManager = new QuestionManager({
+			container: $("div.body-container"),
+			time: this.session.getConfig().timeQuestionPractice*1000
+		})
+	},
+	createDuel: function(){
+		$("div.body-container").empty();
+		var quiestionManager = new QuestionManager({
 			container: $("div.body-container")
 		})
 	},
@@ -289,33 +332,20 @@ Application.prototype = {
 			collection: new Teams(),
 			container: $("div.body-container")
 		})
-		// var teams = new Teams();
-		// teams.url = this.server+teams.url;
-		// var header = this.getHeaders();
-		// teams.fetch({
-		// 	headers: header,
-		// 	success: function(collection, response, options){
-		// 		var data = response.data;
-		// 		_.each(data, function(value, key){
-		// 			console.log(value);
-		// 		})
-		// 	},
-		// 	error: function(){
-		// 	}
-		// })
 	},
 
 	createGroups: function(){
 		$("div.body-container").empty();
 		var teamPosition = new TeamPosition({
 			container: $("div.body-container"),
+			collection: new Groups(),
 			className: "panel-positions"
 		})
 	},
 
 	createPlayers: function(){
 		$("div.body-container").empty();
-		var teamPosition = new PlayerPosition({
+		var playerPosition = new PlayerPosition({
 			className: "panel-positions",
 			container: $("div.body-container"),
 			collection: new Players()
@@ -328,6 +358,14 @@ Application.prototype = {
 			container: $("div.body-container"),
 			className: "div-text",
 			text: "Este es el texto largo de prueba para poner textos largos y entonces no se que mas escribir y aja empiezo a escribir lo primero que se me ocurra porque la idea es generar un texto largo de varios renglones para probar, ya que aqui irá un texto redactado por geobel y necesito hacerlo",
+		})
+	},
+
+	createSuggestion: function(){
+		$("div.body-container").empty();
+		var suggestion = new Suggestion({
+			container: $("div.body-container"),
+			className: 'suggestion'
 		})
 	},
 

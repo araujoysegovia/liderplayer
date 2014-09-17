@@ -10,7 +10,6 @@ var TeamPosition = Backbone.View.extend({
 		_.extend(self, config);
 		self.$el = $(self.tag);
 		self.$el.addClass(self.className);
-		self.collection = new Teams();
 		self.initialize();
 	},
 	initialize: function(){
@@ -23,6 +22,7 @@ var TeamPosition = Backbone.View.extend({
 				success: function(collection, response, options){
 					var data = response.data;
 					_.each(data, function(value){
+						console.log(data);
 						var panelTable = new PanelTable({
 							container: me.$el,
 							title: value.name,

@@ -34,6 +34,11 @@ Session.prototype = {
 		return ses.token;
 	},
 
+	getConfig: function(){
+		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		return ses.config;
+	},
+
 	getUser: function(){
 		var ses =  JSON.parse(sessionStorage[this.sessionName]);
 		return ses.user;

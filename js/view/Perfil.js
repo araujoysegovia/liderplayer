@@ -36,7 +36,7 @@ var Perfil = Backbone.View.extend({
 		var me = this;
 		var user = liderApp.session.getUser();
 		var ul = $("<ul></ul>").addClass("list-group");
-		var img = $("<img/>").attr("src", liderApp.server+"/image/"+user.image).addClass("img-user");
+		var img = $("<img/>").attr("src", liderApp.server+"/image/"+user.image+"?width=130&height=130").addClass("img-user");
 		var name = $("<li></li>").append($("<label></label>").html(user.name+" "+user.latname)).addClass("list-group-item");
 		var email = $("<li></li>").append($("<label></label>").html(user.email)).addClass("list-group-item");
 		var team = $("<li></li>").append($("<label></label>").html(user.team.name)).addClass("list-group-item");
@@ -190,7 +190,6 @@ var Perfil = Backbone.View.extend({
 			$("div[d-id=repeat]").removeClass("has-warning");
 			if($("input[data-id=new]").val() != null && $("input[data-id=new]").val() != "" && $("input[data-id=repeat]").val() != null && $("input[data-id=repeat]").val() != "" && $("input[data-id=actual]").val() != null && $("input[data-id=actual]").val() != ""){
 				if($("input[data-id=new]").val() == $("input[data-id=repeat]").val()){
-					console.log("entre");
 					var data = {
 						oldPassword: $("input[data-id=actual]").val(),
 						newPassword: $("input[data-id=new]").val(),

@@ -16,7 +16,7 @@ var List = Backbone.View.extend({
 	initialize: function(){
 		var me = this;
 		var user = liderApp.session.getUser();
-		var imgPerfil = $("<img/>").attr("src", liderApp.server+"/image/"+user.image);
+		var imgPerfil = $("<img/>").attr("src", liderApp.server+"/image/"+user.image+"?width=130&height=130");
 		me.createItem(imgPerfil, "img-user");
 		var array = {
 			"first": {
@@ -31,6 +31,7 @@ var List = Backbone.View.extend({
 			"Jugadores": "player",
 			"Reglas": "rule",
 			"Ayuda": "help",
+			"Sugerencias": "suggestion",
 			"Premios": "reward",
 			"Cerrar Sesión": "logout"
 		}
