@@ -190,7 +190,6 @@ var Perfil = Backbone.View.extend({
 			$("div[d-id=repeat]").removeClass("has-warning");
 			if($("input[data-id=new]").val() != null && $("input[data-id=new]").val() != "" && $("input[data-id=repeat]").val() != null && $("input[data-id=repeat]").val() != "" && $("input[data-id=actual]").val() != null && $("input[data-id=actual]").val() != ""){
 				if($("input[data-id=new]").val() == $("input[data-id=repeat]").val()){
-					console.log("entre");
 					var data = {
 						oldPassword: $("input[data-id=actual]").val(),
 						newPassword: $("input[data-id=new]").val(),

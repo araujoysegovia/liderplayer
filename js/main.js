@@ -333,13 +333,14 @@ Application.prototype = {
 		$("div.body-container").empty();
 		var teamPosition = new TeamPosition({
 			container: $("div.body-container"),
+			collection: new Groups(),
 			className: "panel-positions"
 		})
 	},
 
 	createPlayers: function(){
 		$("div.body-container").empty();
-		var teamPosition = new PlayerPosition({
+		var playerPosition = new PlayerPosition({
 			className: "panel-positions",
 			container: $("div.body-container"),
 			collection: new Players()
@@ -352,6 +353,14 @@ Application.prototype = {
 			container: $("div.body-container"),
 			className: "div-text",
 			text: "Este es el texto largo de prueba para poner textos largos y entonces no se que mas escribir y aja empiezo a escribir lo primero que se me ocurra porque la idea es generar un texto largo de varios renglones para probar, ya que aqui irá un texto redactado por geobel y necesito hacerlo",
+		})
+	},
+
+	createSuggestion: function(){
+		$("div.body-container").empty();
+		var suggestion = new Suggestion({
+			container: $("div.body-container"),
+			className: 'suggestion'
 		})
 	},
 

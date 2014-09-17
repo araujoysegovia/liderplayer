@@ -157,9 +157,11 @@ var QuestionManager = Backbone.View.extend({
 		$("div[data-alert=true]", me.$el).fadeIn(100);
 	},
 
-	showSuccessMessage: function(answerId){
+	showSuccessMessage: function(answerId, showMessage){
 		var bId = $("div[data-id='"+answerId+"']");
-		$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
+		if(showMessage !== undefined && showMessage == true){
+			$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
+		}
 		bId.addClass("btn-success");
 	},
 
@@ -237,11 +239,14 @@ var QuestionManager = Backbone.View.extend({
 				
 				if(answerId != "no-answer"){
 					if(response.success){
-						me.showSuccessMessage(answerId)
+						me.showSuccessMessage(answerId, true)
 						liderApp.session.addQuestion(true);
 					}
 					else{
 						if(response.code == "02"){
+							if(response.answerOk){
+								me.showSuccessMessage(response.answerOk)
+							}
 							me.showWrongMessage(answerId);
 						}
 						else if(response.code == "01"){
