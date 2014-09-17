@@ -10,7 +10,6 @@ var PlayerPosition = Backbone.View.extend({
 		_.extend(self, config);
 		self.$el = $(self.tag);
 		self.$el.addClass(self.className);
-		self.collection = new Players();
 		self.initialize();
 	},
 	initialize: function(){
@@ -50,11 +49,11 @@ var PlayerPosition = Backbone.View.extend({
 							"name": "points",
 							"value": "P"
 						}],
-						tpl: "<td><%= name %> <%= lastname %></td>"+
-							 "<td></td>"+
-							 "<td><%= wonGames %></td>"+
-							 "<td><%= wonLost %></td>"+
-							 "<td></td>"
+						tpl: "<td><%= fullname %></td>"+
+							 "<td><%= total %></td>"+
+							 "<td><%= win %></td>"+
+							 "<td><%= lost %></td>"+
+							 "<td><%= totalPoint %></td>"
 					});
 					panelTable.buildTableBody(data);
 				}

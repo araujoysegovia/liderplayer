@@ -27,8 +27,8 @@ Application.prototype = {
 	router: null,
 	// server: "http://10.101.1.46/lider/web/app_dev.php",
 	// server: "http://10.101.1.135/lider/web/app_dev.php",
-	server: "http://localhost/lider/web/app_dev.php",
-	// server: "http://soylider.sifinca.net",
+	// server: "http://localhost/lider/web/app_dev.php",
+	server: "http://soylider.sifinca.net",
 	constructor: function(){
 		var me = this;
 		// this.editCollections();
