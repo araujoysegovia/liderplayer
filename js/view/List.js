@@ -31,6 +31,7 @@ var List = Backbone.View.extend({
 			"Jugadores": "player",
 			"Reglas": "rule",
 			"Ayuda": "help",
+			"Sugerencias": "suggestion",
 			"Premios": "reward",
 			"Cerrar Sesión": "logout"
 		}

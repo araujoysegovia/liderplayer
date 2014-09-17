@@ -11,6 +11,7 @@ var routerManager = Backbone.Router.extend({
 		"player": "player",
 		"rule": "rule",
 		"help": "help",
+		"suggestion": "suggestion",
 		"reward": "reward",
 		"logout": "logout"
 		
@@ -120,6 +121,18 @@ var routerManager = Backbone.Router.extend({
 		var span = $("span.location-span").html("Ayuda");
 		span.css("margin-left", "-"+span.width()/2)
 		this.application.createHelp();
+	},
+
+	suggestion: function(){
+		if(!this.checkSession()){
+			window.location = "#login";
+			// Backbone.history.navigate("login", true);
+			return;
+		}
+		this.defaultValues();
+		var span = $("span.location-span").html("Sugerencias");
+		span.css("margin-left", "-"+span.width()/2)
+		this.application.createSuggestion();
 	},
 
 	reward: function(){
