@@ -30,7 +30,7 @@ var TeamView = Backbone.View.extend({
 							// collection: new Players(),
 							tpl: "<div class='player-item-list'>"+
 									"<div class='player-img'>"+
-										'<img src="'+liderApp.server+'/image/<%= image %>" />'+
+										'<img src="'+liderApp.server+'/image/<%= image %>?width=40&height=40" width="40px" height="40px" />'+
 									"</div>"+
 									"<div class='player-info'>"+
 										"<h5><%= name %> <%= lastname %></h5>"+
