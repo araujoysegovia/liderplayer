@@ -50,7 +50,6 @@ $(document).ready(function(){
 function signinCallback(authResult) {
 	
 	  if(authResult['access_token']) {
-		  console.log(authResult)
 		  var formData = new FormData();
 		  formData.append("access_token", authResult['access_token']);
 		  formData.append("code", authResult['code']);

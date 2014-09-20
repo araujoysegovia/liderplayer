@@ -31,6 +31,8 @@ var Suggestion = Backbone.View.extend({
 				text: $("textarea[data-id=content]").val(),
 			};
 			var header = liderApp.getHeaders();
+			var loader = $(document.body).loaderPanel();
+		  	loader.show();
 			var config = {
 				headers: header,
 				type: "POST",
@@ -63,6 +65,9 @@ var Suggestion = Backbone.View.extend({
 			    	}
 
 		    	},
+		    	complete: function(){
+		    		loader.hide();
+		    	}
 			}
 			$.ajax(config)
 		})

@@ -26,14 +26,10 @@ Application.prototype = {
 	session: null,
 	router: null,
 	// server: "http://10.101.1.46/lider/web/app_dev.php",
-<<<<<<< HEAD
-	server: "http://10.101.1.135/lider/web/app_dev.php",
-	//server: "http://soylider.sifinca.net",
-=======
-	// server: "http://10.101.1.135/lider/web/app_dev.php",
 	// server: "http://localhost/lider/web/app_dev.php",
-	server: "http://soylider.sifinca.net",
->>>>>>> f401418251e5050d11685eb6202a44e4805a6b03
+	server: "http://10.101.1.135/lider/web/app_dev.php",
+	// server: "http://soylider.sifinca.net",
+
 	constructor: function(){
 		var me = this;
 		// this.editCollections();
@@ -270,38 +266,28 @@ Application.prototype = {
 			className: "panel-danger",
 			maxHeight: 180,
 			collection: duelCollection,
-			tpl: "<div class='player-item'>"+
-					"<div class='player-item-container item-win'>"+
-						"<div class='player-img'>"+
-							"<img src='"+this.server+"/image/"+this.session.getUser().image+"?width=40&height=40' width='40px' height='40px' />"+
-						"</div>"+
-						"<div class='player-info'>"+
-							"<h5><%= name %></h5>"+
-							"<div class='games-info'>"+
-								"<div class='match-info score'>"+
-									"<img src='images/icons/win.png' style='width:20px; margin-top:-7px'/>"+
-									"<span>2</span>"+
-								"</div>"+
+			tpl: "<div class='player-item-list'>"+
+					"<div class='player-img'>"+
+						"<img src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
+					"</div>"+
+					"<div class='player-info'>"+
+						"<h5><%= name %></h5>"+
+						"<h6><span class='glyphicon glyphicon-envelope'></span>  <%= email %></h6>"+
+						"<div class='games-info'>"+
+							"<div class='match-info your-question'>"+
+								"<span>Tu</span>"+
+								"<span>2</span>"+
+							"</div>"+
+							"<div class='match-info rival-question'>"+
+								"<span>Rival</span>"+
+								"<span>3</span>"+
+							"</div>"+
+							"<div class='match-info total-question'>"+
+								"<span>Total</span>"+
+								"<span>5</span>"+
 							"</div>"+
 						"</div>"+
-					"</div>"+
-					"<div class='player-item-vs'>"+
-						"<img src='http://www.ccbetania.org/alianzaextrema/wp-content/uploads/2012/02/VS-1.png' />"+
-					"</div>"+
-					"<div class='player-item-container player-item-container-2 item-loose'>"+
-						"<div class='player-img'>"+
-							"<img class='gray-scale' src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
-						"</div>"+
-						"<div class='player-info'>"+
-							"<h5><%= name %></h5>"+
-							"<div class='games-info'>"+
-								"<div class='match-info score'>"+
-									"<img src='images/icons/win.png' style='width:20px; margin-top:-7px' />"+
-									"<span>2</span>"+
-								"</div>"+
-							"</div>"+
-						"</div>"+
-					"</div>"+
+					"</div>"+					
 				  "</div>"
 		})
 	},
@@ -322,7 +308,9 @@ Application.prototype = {
 	createDuel: function(){
 		$("div.body-container").empty();
 		var quiestionManager = new QuestionManager({
-			container: $("div.body-container")
+			container: $("div.body-container"),
+			duel: true,
+			time: this.session.getConfig().timeQuestionPractice*1000
 		})
 	},
 	createTeamPanels: function(){
