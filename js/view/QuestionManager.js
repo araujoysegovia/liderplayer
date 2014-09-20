@@ -7,6 +7,7 @@ var QuestionManager = Backbone.View.extend({
 	currentQuestionId: null,
 	lastData: null,
 	duel: false,
+	opponent: null,
 	time: null,
 	counter: null,
 	constructor : function(config) {
@@ -34,16 +35,18 @@ var QuestionManager = Backbone.View.extend({
 		var divButtons = $("<div></div>").addClass("div-iniciar");
 		var buttonStart = $("<button></button>").html("Empezar").addClass("btn btn-primary btn-iniciar");
 		var divDuel = $("<div></div>").addClass("player-item-container");
-		var divUser = $("<div></div>").addClass("'player-img");
-		var userImg = $("<img />").attr("src", this.server+"/image/"+this.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
-		divUser.append(userImg);
-		// var divVs
+		var divUser = $("<div></div>").addClass("player-img");
+		var userImg = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+		var divUser2 = $("<div></div>").addClass("player-img player-img-opponent");
+		var userImg2 = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+		var divVs = $('<div></div>').addClass('player-item-vs');
+		var imgVs = $('<img />').attr('src', 'http://www.ccbetania.org/alianzaextrema/wp-content/uploads/2012/02/VS-1.png');
+		divDuel.append(divUser.append(userImg)).append(divVs.append(imgVs)).append(divUser2.append(userImg2));
 		divButtons.append(buttonStart);
 		buttonStart.click(function(e){
 			me.buildQuestion();
 		})
-		var img = $("<img />").attr("src", "images/lider-logo.png");
-		me.$el.append(img).append(divButtons);
+		me.$el.append(divDuel).append(divButtons);
 	},
 
 	initializePractice: function(){
@@ -344,67 +347,149 @@ var QuestionManager = Backbone.View.extend({
 				"title": "Pregunta Mal formulada",
 				"description": "No se entiende la pregunta"
 			}
-		}
+		};
 		var modal = $("<div></div>").addClass("modal fade");
 		_.each(arrayElements, function(value, key){
-			var link = $("<a></a>").attr("href", "#").addClass("list-group-item");
+			var link = $("<a></a>").attr("href", "#").addClass("list-group-item").attr("data-title", value['title']);
 			var title = $("<h4></h4>").addClass("list-group-item-heading").html(value['title']);
 			var description = $("<p></p>").addClass("list-group-item-text").html(value['description']);
 			link.append(title).append(description);
 			divReasons.append(link);
-			link.click(function(){
-				var data = {
-					questionId: me.currentQuestionId,
-					reportText: value['title'],
-				};
-				var header = liderApp.getHeaders();
-				var config = {
-					headers: header,
-					type: "POST",
-					url: liderApp.server+"/home/question/report",
-					data: JSON.stringify(data),
-					contentType: 'application/json',
-		            dataType: "json",
-		            success:function(response, data, c){
-		            	modal.modal("hide");
-		            	$("div.report-question").css("display", "none");
-		            },
-		            error: function(xhr, status, error) {
-				    	try{
-					    	var obj = jQuery.parseJSON(xhr.responseText);
-					    	var n = noty({
-					    		text: obj.message,
-					    		timeout: 1000,
-					    		type: "error"
-					    	});
-				    	}catch(ex){
-				    		var n = noty({
-					    		text: "Error",
-					    		timeout: 1000,
-					    		type: "error"
-					    	});
-				    	}
 
-			    	},
-				}
-				$.ajax(config)
+			link.click(function(){
+				divReasons.find('a.active').removeClass('active');
+				$(this).addClass('active');
 			})
-		})
+		});
+
+		/*
+		<div class="form-group">
+		    <label for="exampleInputEmail1">Email address</label>
+		    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+		</div>*/
+
+		var cdiv = $('<div></div>').addClass('form-group')
+					.append($('<label></label>').html('Causal'))
+					.append($('<textarea rows="3"></textarea>').addClass('form-control'));
+
+
+
+
 		var modalDialog = $("<div></div>").addClass("modal-dialog");
 		var modalHeader = $("<div></div>").addClass("modal-header");
 		var btnClose = $("<button></button>").attr("type", "button").attr("data-dismiss", "modal").addClass("close");
 		var spanClose = $("<span></span>").attr("aria-hidden", "true").html("&times;");
 		var spanClose2 = $("<span></span>").addClass("sr-only").html("Close");
 		btnClose.append(spanClose).append(spanClose2);
+		
 		var titleHeading = $("<h4></h4>").addClass("modal-title").html("Reportar Pregunta");
 		modalHeader.append(btnClose).append(titleHeading);
-		var modalBody = $("<div></div>").addClass("modal-body").append(divReasons);
+
+		var modalBody = $("<div></div>").addClass("modal-body").append(divReasons).append(cdiv);
 		var modalContent = $("<div></div>").addClass("modal-content");
-		modal.append(modalDialog.append(modalContent.append(modalHeader).append(modalBody)));
+
+		var modalFooter = $("<div></div>").addClass("modal-footer");
+		var closeButton = $('<button>').attr('type', 'button').attr('data-dismiss', 'modal').addClass('btn btn-default').html('Cerrar');
+		var saveButton = $('<button>').attr('type', 'button').addClass('btn btn-primary').html('Guardar');
+		modalFooter.append(closeButton).append(saveButton);
+		/*
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	<button type="button" class="btn btn-primary">Save changes</button>
+		*/
+
+		modal.append(modalDialog.append(modalContent.append(modalHeader).append(modalBody).append(modalFooter)));
 		$(document.body).append(modal);
 		modal.modal("show");
 		modal.on("hidden.bs.modal", function(){
     		modal.remove();
-    	})
+    	});
+
+    	saveButton.click(function(){
+    		var title = divReasons.find('a.active');
+    		if(title.length == 0){
+    			var n = noty({
+		    		text: 'Ninguna razon seleccionada',
+		    		timeout: 1000,
+		    		type: "error"
+		    	});
+		    	return;
+    		}
+
+
+    		var data = {
+				questionId: me.currentQuestionId,
+				reportText: title.attr('data-title'),
+				causal: cdiv.find("textarea").val()
+			};
+			var header = liderApp.getHeaders();
+			var config = {
+				headers: header,
+				type: "POST",
+				url: liderApp.server+"/home/question/report",
+				data: JSON.stringify(data),
+				contentType: 'application/json',
+	            dataType: "json",
+	            success:function(response, data, c){
+	            	modal.modal("hide");
+	            	$("div.report-question").css("display", "none");
+	            },
+	            error: function(xhr, status, error) {
+			    	try{
+				    	var obj = jQuery.parseJSON(xhr.responseText);
+				    	var n = noty({
+				    		text: obj.message,
+				    		timeout: 1000,
+				    		type: "error"
+				    	});
+			    	}catch(ex){
+			    		var n = noty({
+				    		text: "Error",
+				    		timeout: 1000,
+				    		type: "error"
+				    	});
+			    	}
+
+		    	},
+			}
+			$.ajax(config);
+    	}
+
+    	/*
+    	var data = {
+			questionId: me.currentQuestionId,
+			reportText: value['title'],
+		};
+		var header = liderApp.getHeaders();
+		var config = {
+			headers: header,
+			type: "POST",
+			url: liderApp.server+"/home/question/report",
+			data: JSON.stringify(data),
+			contentType: 'application/json',
+            dataType: "json",
+            success:function(response, data, c){
+            	modal.modal("hide");
+            	$("div.report-question").css("display", "none");
+            },
+            error: function(xhr, status, error) {
+		    	try{
+			    	var obj = jQuery.parseJSON(xhr.responseText);
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}catch(ex){
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}
+
+	    	},
+		}
+		$.ajax(config)
+		*/
 	}
 })
