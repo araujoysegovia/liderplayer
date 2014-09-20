@@ -206,6 +206,11 @@ header[data-id=questionHeader] .counter{
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+	cursor: pointer;
+}
+
+.player-item-list:hover{
+	background-color: #eeeeee;
 }
 
 .player-item-list .player-img{

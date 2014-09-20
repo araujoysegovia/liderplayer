@@ -35,7 +35,7 @@ var ListPanel = Backbone.View.extend({
 			me.collection.fetch({
 				headers: header,
 				success: function(collection, response, options){
-					var data = response.data;
+					var data = response.data;					
 					_.each(data, function(value, key){
 						me.createItem(value);
 					})

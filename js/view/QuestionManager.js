@@ -34,21 +34,54 @@ var QuestionManager = Backbone.View.extend({
 
 	initializeDuel: function(){
 		var me = this;
-		var divButtons = $("<div></div>").addClass("div-iniciar");
-		var buttonStart = $("<button></button>").html("Empezar").addClass("btn btn-primary btn-iniciar");
-		var divDuel = $("<div></div>").addClass("player-item-container");
-		var divUser = $("<div></div>").addClass("player-img");
-		var userImg = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
-		var divUser2 = $("<div></div>").addClass("player-img player-img-opponent");
-		var userImg2 = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
-		var divVs = $('<div></div>').addClass('player-item-vs');
-		var imgVs = $('<img />').attr('src', 'http://www.ccbetania.org/alianzaextrema/wp-content/uploads/2012/02/VS-1.png');
-		divDuel.append(divUser.append(userImg)).append(divVs.append(imgVs)).append(divUser2.append(userImg2));
-		divButtons.append(buttonStart);
-		buttonStart.click(function(e){
-			me.buildQuestion();
-		})
-		me.$el.append(divDuel).append(divButtons);
+		var loader = $(document.body).loaderPanel();
+		loader.show();
+		var header = liderApp.getHeaders();
+		$.ajax({
+		  	type: "GET",
+		  	headers: header,
+			url: liderApp.server+"/home/duel/"+me.duelId,
+			//contentType: 'application/json',
+            //dataType: "json",
+			success: function(data){
+				var divButtons = $("<div></div>").addClass("div-iniciar");
+				var buttonStart = $("<button></button>").html("Empezar").addClass("btn btn-primary btn-iniciar");
+				var divDuel = $("<div></div>").addClass("player-item-container");
+				var divUser = $("<div></div>").addClass("player-img");
+				var userImg = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+				var divUser2 = $("<div></div>").addClass("player-img player-img-opponent");
+				var userImg2 = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+				var divVs = $('<div></div>').addClass('player-item-vs');
+				var imgVs = $('<img />').attr('src', 'http://www.ccbetania.org/alianzaextrema/wp-content/uploads/2012/02/VS-1.png');
+				divDuel.append(divUser.append(userImg)).append(divVs.append(imgVs)).append(divUser2.append(userImg2));
+				divButtons.append(buttonStart);
+				buttonStart.click(function(e){
+					me.buildQuestion();
+				})
+				me.$el.append(divDuel).append(divButtons);				
+			},
+			error: function(xhr, status, error) {
+		    	try{
+			    	var obj = jQuery.parseJSON(xhr.responseText);
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}catch(ex){
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}
+		    	//window.location = "#home";
+	    	},	    	
+	    	complete: function(){
+	    		loader.hide();
+	    	}
+	    });
+		
 	},
 
 	initializePractice: function(){
@@ -84,10 +117,14 @@ var QuestionManager = Backbone.View.extend({
 		var loader = $(document.body).loaderPanel();
 		loader.show();
 		var header = liderApp.getHeaders();
+		var url = liderApp.server+"/home/question/test";
+		if(me.duel){
+			url = liderApp.server+"/home/question/duel/"+me.duelId;
+		}
 		$.ajax({
 		  	type: "GET",
 		  	headers: header,
-			url: liderApp.server+"/home/question/test",
+			url: url,
 			//contentType: 'application/json',
             //dataType: "json",
 			success: function(data){
@@ -173,7 +210,7 @@ var QuestionManager = Backbone.View.extend({
 							type: "PUT", 	
 							headers: header,
 						    url: liderApp.server + "/home/question/help",
-						    JSON.stringify({
+						    data: JSON.stringify({
 						    	token: me.currentToken
 						    }),
 					        contentType: 'application/json',
@@ -257,7 +294,7 @@ var QuestionManager = Backbone.View.extend({
 		if(answer['help'])
 			this.answerHelp = answer['id'];
 		if(answer['oa'])
-			this.answerOk = answer['id'],
+			this.answerOk = answer['id'];
 			
 		var button = $("<div></div>").attr("data-id", answer['id']).html(window.atob(answer['answer'])).addClass("btn btn-default btn-answer");
 		return button;
@@ -277,10 +314,15 @@ var QuestionManager = Backbone.View.extend({
 			var loader = $(document.body).loaderPanel();
 			loader.show();
 		}
+
+		var url = liderApp.server+"/home/question/answer/check";
+		if(me.duel){
+			url = liderApp.server+"/home/question/answer/duel/check";
+		}
 		var config = {
 			headers: header,
 			type: "POST",
-			url: liderApp.server+"/home/question/answer/check",
+			url: url,
 			data: JSON.stringify(data),
 			contentType: 'application/json',
             dataType: "json",
