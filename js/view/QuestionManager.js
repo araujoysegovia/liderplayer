@@ -452,7 +452,7 @@ var QuestionManager = Backbone.View.extend({
 		    	},
 			}
 			$.ajax(config);
-    	}
+    	});
 
     	/*
     	var data = {
