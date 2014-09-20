@@ -156,41 +156,42 @@ var QuestionManager = Backbone.View.extend({
 		});
 		
 		// SHOW HELP BUtton
-		
-		var helpDiv = $('<div>').addClass('help-container');
-		var helpBtn = $('<button>').attr('type', 'button').addClass('btn btn-primary help-button').html('50/50');
-		helpDiv.append(helpBtn);
-		
-		var header = liderApp.getHeaders();
-		helpBtn.click(function(){
-			me.children('div.btn').css('display', 'none');
-			me.children('div.btn[data-id=' + me.answerHelp + ']').css('display', 'block');
-			me.children('div.btn[data-id=' + me.answerOk + ']').css('display', 'block');
-			$.confirm({
-			    text: "Desea utilizar la ayuda del 50/50?",
-			    confirm: function(button) {
-			        parameters = {
-						type: "PUT", 	
-						headers: header,
-					    url: liderApp.server + "/home/question/help",
-					    JSON.stringify({
-					    	token: me.currentToken
-					    }),
-				        contentType: 'application/json',
-		            	dataType: "json",    
-				        success: function(data){},
-				        error: function(){}
-					};
-
-					$.ajax(parameters);
-			    },
-			    cancel: function(button) {
-			        // do something
-			    }
+		if(me.duel){
+			var helpDiv = $('<div>').addClass('help-container');
+			var helpBtn = $('<button>').attr('type', 'button').addClass('btn btn-primary help-button').html('50/50');
+			helpDiv.append(helpBtn);
+			
+			var header = liderApp.getHeaders();
+			helpBtn.click(function(){
+				me.children('div.btn').css('display', 'none');
+				me.children('div.btn[data-id=' + me.answerHelp + ']').css('display', 'block');
+				me.children('div.btn[data-id=' + me.answerOk + ']').css('display', 'block');
+				$.confirm({
+				    text: "Desea utilizar la ayuda del 50/50?",
+				    confirm: function(button) {
+				        parameters = {
+							type: "PUT", 	
+							headers: header,
+						    url: liderApp.server + "/home/question/help",
+						    JSON.stringify({
+						    	token: me.currentToken
+						    }),
+					        contentType: 'application/json',
+			            	dataType: "json",    
+					        success: function(data){},
+					        error: function(){}
+						};
+	
+						$.ajax(parameters);
+				    },
+				    cancel: function(button) {
+				        // do something
+				    }
+				});
 			});
-		});
-		
-		this.$el.append(helpDiv);
+			
+			this.$el.append(helpDiv);
+		}
 		
 	},
 
