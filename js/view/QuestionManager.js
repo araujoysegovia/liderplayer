@@ -362,11 +362,7 @@ var QuestionManager = Backbone.View.extend({
 			})
 		});
 
-		/*
-		<div class="form-group">
-		    <label for="exampleInputEmail1">Email address</label>
-		    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-		</div>*/
+
 
 		var cdiv = $('<div></div>').addClass('form-group')
 					.append($('<label></label>').html('Causal'))
