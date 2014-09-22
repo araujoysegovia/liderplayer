@@ -13,8 +13,8 @@ var routerManager = Backbone.Router.extend({
 		"help": "help",
 		"suggestion": "suggestion",
 		"reward": "reward",
-		"logout": "logout"
-		
+		"logout": "logout",
+		"duel-:duelId": "duel"
 	},
 
 	login: function(){
@@ -63,6 +63,23 @@ var routerManager = Backbone.Router.extend({
 		span.css("margin-left", "-"+span.width()/2)
 		this.application.createSimulator();
 	},
+
+	duel: function(id){
+
+		if(!this.checkSession()){
+			window.location = "#login";
+			// Backbone.history.navigate("login", true);
+			return;
+		}
+		this.defaultValues();
+		var span = $("span.location-span").html("Práctica");
+		span.css("margin-left", "-"+span.width()/2)
+		console.log(id)
+		var idDecode = window.atob(id);
+		console.log(idDecode)
+		this.application.createDuel(idDecode);
+	},
+
 
 	team: function(){
 		if(!this.checkSession()){
@@ -169,5 +186,6 @@ var routerManager = Backbone.Router.extend({
 	checkSession: function(){
 		return this.application.session.isCreated();
 	}
+
 	
 });
