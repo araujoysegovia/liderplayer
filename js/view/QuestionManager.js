@@ -24,8 +24,48 @@ var QuestionManager = Backbone.View.extend({
 	},
 	initialize: function(){
 		var me = this;
+
 		if(me.duel){
-			me.initializeDuel();
+			var loader = $(document.body).loaderPanel();
+			loader.show();
+			var header = liderApp.getHeaders();
+			$.ajax({
+			  	type: "GET",
+			  	headers: header,
+				url: liderApp.server+"/home/question/duel/"+me.duelId+'/count',
+				//contentType: 'application/json',
+	            //dataType: "json",
+				success: function(data){
+					if(data.total > 0)
+					{
+						me.initializeDuel();
+					}
+					else{
+						me.responseAnswer(true, 'Ya finalisaste este duelo');
+					}
+					
+				},
+				error: function(xhr, status, error) {
+			    	try{
+				    	var obj = jQuery.parseJSON(xhr.responseText);
+				    	var n = noty({
+				    		text: obj.message,
+				    		timeout: 1000,
+				    		type: "error"
+				    	});
+			    	}catch(ex){
+			    		var n = noty({
+				    		text: "Error",
+				    		timeout: 1000,
+				    		type: "error"
+				    	});
+			    	}
+			    	//window.location = "#home";
+		    	},	    	
+		    	complete: function(){
+		    		loader.hide();
+		    	}
+		    });
 		}else{
 			me.initializePractice();
 		}
@@ -125,12 +165,12 @@ var QuestionManager = Backbone.View.extend({
 		  	type: "GET",
 		  	headers: header,
 			url: url,
-			//contentType: 'application/json',
-            //dataType: "json",
+			contentType: 'application/json',
+            dataType: "json",
 			success: function(data){
 				me.lastData = JSON.stringify(data);
 				me.currentToken = data.token;
-				var q = data.question[0];
+				var q = data.question;
 				var category = q.category.name;
 				$("#questionCategory").html(category);
 				me.currentQuestionId = q.id;
@@ -157,7 +197,7 @@ var QuestionManager = Backbone.View.extend({
 				  			me.checkQuestion("no-answer");
 				  			me.showTimeExpireMessage();
 				  			setTimeout(function(){
-								me.responseAnswer();
+								me.responseAnswer(false);
 							},1000)
 				  			break;
 				  		case "pbar":
@@ -200,22 +240,21 @@ var QuestionManager = Backbone.View.extend({
 			
 			var header = liderApp.getHeaders();
 			helpBtn.click(function(){
-				me.children('div.btn').css('display', 'none');
-				me.children('div.btn[data-id=' + me.answerHelp + ']').css('display', 'block');
-				me.children('div.btn[data-id=' + me.answerOk + ']').css('display', 'block');
 				$.confirm({
 				    text: "Desea utilizar la ayuda del 50/50?",
 				    confirm: function(button) {
 				        parameters = {
-							type: "PUT", 	
+							type: "GET",
 							headers: header,
-						    url: liderApp.server + "/home/question/help",
-						    data: JSON.stringify({
-						    	token: me.currentToken
-						    }),
+						    url: liderApp.server + "/home/question/help/"+me.currentToken,
 					        contentType: 'application/json',
 			            	dataType: "json",    
-					        success: function(data){},
+					        success: function(data){
+					        	me.$el.children('div.btn').css('display', 'none');
+								me.$el.children('div.btn[data-id=' + me.answerHelp + ']').css('display', 'block');
+								me.$el.children('div.btn[data-id=' + me.answerOk + ']').css('display', 'block');
+								helpBtn.css('display', 'none');
+					        },
 					        error: function(){}
 						};
 	
@@ -296,7 +335,7 @@ var QuestionManager = Backbone.View.extend({
 		if(answer['oa'])
 			this.answerOk = answer['id'];
 			
-		var button = $("<div></div>").attr("data-id", answer['id']).html(window.atob(answer['answer'])).addClass("btn btn-default btn-answer");
+		var button = $("<div></div>").attr("data-id", answer['id']).html(answer['answer']).addClass("btn btn-default btn-answer");
 		return button;
 
 	},
@@ -347,7 +386,13 @@ var QuestionManager = Backbone.View.extend({
 					}
 					$("div[data-alert=true]", me.$el).fadeIn(100);
 					setTimeout(function(){
-						me.responseAnswer();
+						if(me.duel && response.lastOne){
+							me.responseAnswer(true);
+						}
+						else{
+							me.responseAnswer(false);
+						}
+						
 					}, 1000);
 				}
 			},
@@ -364,18 +409,32 @@ var QuestionManager = Backbone.View.extend({
 	endGame: function(){
 		liderApp.enableHeaders();
 	},
-	responseAnswer: function(){
+	responseAnswer: function(lastOne, m){
+		lastOne = lastOne || false;
 		var me = this;
 		var divButtons = $("<div></div>").addClass("div-iniciar");
 		var buttonStart = $("<button></button>").html("Siguiente").addClass("btn btn-success btn-iniciar ").attr("data-id", "btniniciar");
 		var buttonExit = $("<button></button>").html("Salir").addClass("btn btn-danger btn-iniciar").attr("data-id", "btnsalir");
 		var reportq = $("<a></a>").html("Reportar Pregunta");
 		var divReport = $("<div></div>").append(reportq).addClass("report-question");
-		divButtons.append(buttonExit).append(buttonStart);
+		divButtons.append(buttonExit);
 		
 		var img = $("<img />").attr("src", "images/lider-logo.png");
+		if(!lastOne)
+		{
+			divButtons.append(buttonStart);
+			var principalDiv = $("<div></div>").addClass("question-notify").append(img).append(divButtons).append(divReport);
+		}
+		else{
+			m = m ? m : 'Has finalizado las preguntas del duelo';
+			var message = $('<h3></h3>').html(m).addClass('message-final-duel');
+			var messageDiv = $('<div></div>').append(message).css('text-align', 'center');
+			divButtons.css('text-align', 'center');
+			var principalDiv = $("<div></div>").addClass("question-notify").append(img).append(messageDiv).append(divButtons);
+		}
+		
 		// me.$el.append(img).append(divButtons);
-		var principalDiv = $("<div></div>").addClass("question-notify").append(img).append(divButtons).append(divReport);
+		
 		var modal = $("<div></div>")
 			.css("position", "absolute")
 		 	.css("width", "100%")

@@ -24,6 +24,7 @@ var routerManager = Backbone.Router.extend({
 		}else{
 			this.application.session.deleteSession();
 		}
+		document.cookie =  'PHPSESSID=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 		$('div.login').css("display", "block");
 		$('div.home').css("display", "none");
 	},
@@ -74,9 +75,7 @@ var routerManager = Backbone.Router.extend({
 		this.defaultValues();
 		var span = $("span.location-span").html("Práctica");
 		span.css("margin-left", "-"+span.width()/2)
-		console.log(id)
 		var idDecode = window.atob(id);
-		console.log(idDecode)
 		this.application.createDuel(idDecode);
 	},
 
@@ -173,14 +172,43 @@ var routerManager = Backbone.Router.extend({
 		if(this.application.session.verificateChangePassword()){
 			this.application.changePasswordModel();
 		}
+		var header = this.application.getHeaders();
+		var config = {
+			headers: header,
+			type: "GET",
+			url: this.application.server+"/home/player/gameinfo",
+			contentType: 'application/json',
+            dataType: "json",
+            success:function(response, data, c){
+            	$("#win", "div.navbar").html(response.win);
+				$("#loose", "div.navbar").html(response.lost);
+				$("#points", "div.navbar").html(response.points);
+            },
+            error: function(xhr, status, error) {
+		    	try{
+			    	var obj = jQuery.parseJSON(xhr.responseText);
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}catch(ex){
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}
+
+	    	},
+		}
+		$.ajax(config)
 		$('div.login').css("display", "none");
 		$('div.home').css("display", "block");
 		$("header[data-id=mainHeader]").css("display", "block");
 		$("header[data-id=questionHeader]").css("display", "none");
 		$("div.navbar").css("display", "block");
-		$("#win", "div.navbar").html(this.application.session.getUser().gameInfo.win);
-		$("#loose", "div.navbar").html(this.application.session.getUser().gameInfo.lost);
-		$("#points", "div.navbar").html(this.application.session.getUser().gameInfo.points);
+		
 	},
 
 	checkSession: function(){

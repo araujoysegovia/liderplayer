@@ -10,6 +10,7 @@ Session.prototype = {
 		config = config || {};
 		_.extend(this, config);
 		_.extend(me, Backbone.Events);
+
 	},
 
 	createSession: function(mod){

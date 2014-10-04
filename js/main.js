@@ -26,8 +26,8 @@ Application.prototype = {
 	session: null,
 	router: null,
 	// server: "http://10.101.1.46/lider/web/app_dev.php",
-	server: "http://localhost/lider/web/app_dev.php",
-	///server: "http://10.101.1.135/lider/web/app_dev.php",
+	server: "http://10.101.1.55/lider/web/app_dev.php",
+	// server: "http://10.101.1.135/lider/web/app_dev.php",
 	// server: "http://soylider.sifinca.net",
 
 	constructor: function(){
@@ -251,7 +251,7 @@ Application.prototype = {
 				this.list.append(li);
 			}
 		})
-		var team = typeof this.session.getUser().team.name ? "No Asignado" : this.session.getUser().team.name;
+		var team = this.session.getUser().team.name ? this.session.getUser().team.name : "No Asignado";
 		var teamPanel = new ListPanel({
 			title: "Mi Equipo: " + team,
 			container: $("div.body-container"),
@@ -268,11 +268,11 @@ Application.prototype = {
 						"<div class='games-info'>"+
 							"<div class='match-info player-win'>"+
 								"<img src='images/icons/win.png' style='width:20px; margin-top:-7px'/>"+
-								"<span>2</span>"+
+								"<span><%= wonGames %></span>"+
 							"</div>"+
 							"<div class='match-info player-loose'>"+
 								"<img src='images/icons/loose.png' style='width:20px; margin-top:-7px;'/>"+
-								"<span>3</span>"+
+								"<span><%= lostGames %></span>"+
 							"</div>"+
 						"</div>"+
 					"</div>"+					

@@ -454,6 +454,11 @@ header[data-id=questionHeader] .counter{
 	margin-top: 40px;
 }
 
+.question-notify > div > .message-final-duel{
+	font: normal 25px/1 'Righteous', cursive;
+	color: white;
+}
+
 .question-notify > div{
 	margin-top: 20px;
 }
@@ -607,4 +612,5 @@ div.body-container center{
 
 .help-container .help-button{
 	width: 100%;
+	font: normal 25px/1 'Righteous', cursive;
 }

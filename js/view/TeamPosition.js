@@ -22,7 +22,6 @@ var TeamPosition = Backbone.View.extend({
 				success: function(collection, response, options){
 					var data = response.data;
 					_.each(data, function(value){
-						console.log(data);
 						var panelTable = new PanelTable({
 							container: me.$el,
 							title: value.name,
@@ -36,7 +35,7 @@ var TeamPosition = Backbone.View.extend({
 								"width": "50%"
 							},
 							{
-								"name": "Partidas jugadas",
+								"name": "total",
 								"value": "PJ"
 							},
 							{
@@ -52,12 +51,12 @@ var TeamPosition = Backbone.View.extend({
 								"value": "P"
 							}],
 							tpl: "<td><%= name %></td>"+
-								 "<td></td>"+
-								 "<td></td>"+
-								 "<td></td>"+
-								 "<td></td>"
+								 "<td><%= total %></td>"+
+								 "<td><%= win %></td>"+
+								 "<td><%= loose %></td>"+
+								 "<td><%= points %></td>"
 						});
-						panelTable.buildTableBody(value);
+						panelTable.buildTableBody(value.teams);
 					})
 				}
 			})
