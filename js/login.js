@@ -31,7 +31,7 @@ $(document).ready(function(){
 			    		type: "error"
 			    	});
 		    	}catch(ex){
-
+		    		
 		    		var n = noty({
 			    		text: "Error",
 			    		timeout: 1000,

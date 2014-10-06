@@ -7,8 +7,11 @@ var QuestionManager = Backbone.View.extend({
 	currentQuestionId: null,
 	lastData: null,
 	duel: false,
+	opponent: null,
 	time: null,
 	counter: null,
+	answerOk: null,
+	answerHelp: null,
 	constructor : function(config) {
 		var self = this;
 		self._ensureElement();
@@ -21,8 +24,48 @@ var QuestionManager = Backbone.View.extend({
 	},
 	initialize: function(){
 		var me = this;
+
 		if(me.duel){
-			me.initializeDuel();
+			var loader = $(document.body).loaderPanel();
+			loader.show();
+			var header = liderApp.getHeaders();
+			$.ajax({
+			  	type: "GET",
+			  	headers: header,
+				url: liderApp.server+"/home/question/duel/"+me.duelId+'/count',
+				//contentType: 'application/json',
+	            //dataType: "json",
+				success: function(data){
+					if(data.total > 0)
+					{
+						me.initializeDuel();
+					}
+					else{
+						me.responseAnswer(true, 'Ya finalisaste este duelo');
+					}
+					
+				},
+				error: function(xhr, status, error) {
+			    	try{
+				    	var obj = jQuery.parseJSON(xhr.responseText);
+				    	var n = noty({
+				    		text: obj.message,
+				    		timeout: 1000,
+				    		type: "error"
+				    	});
+			    	}catch(ex){
+			    		var n = noty({
+				    		text: "Error",
+				    		timeout: 1000,
+				    		type: "error"
+				    	});
+			    	}
+			    	//window.location = "#home";
+		    	},	    	
+		    	complete: function(){
+		    		loader.hide();
+		    	}
+		    });
 		}else{
 			me.initializePractice();
 		}
@@ -31,19 +74,54 @@ var QuestionManager = Backbone.View.extend({
 
 	initializeDuel: function(){
 		var me = this;
-		var divButtons = $("<div></div>").addClass("div-iniciar");
-		var buttonStart = $("<button></button>").html("Empezar").addClass("btn btn-primary btn-iniciar");
-		var divDuel = $("<div></div>").addClass("player-item-container");
-		var divUser = $("<div></div>").addClass("'player-img");
-		var userImg = $("<img />").attr("src", this.server+"/image/"+this.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
-		divUser.append(userImg);
-		// var divVs
-		divButtons.append(buttonStart);
-		buttonStart.click(function(e){
-			me.buildQuestion();
-		})
-		var img = $("<img />").attr("src", "images/lider-logo.png");
-		me.$el.append(img).append(divButtons);
+		var loader = $(document.body).loaderPanel();
+		loader.show();
+		var header = liderApp.getHeaders();
+		$.ajax({
+		  	type: "GET",
+		  	headers: header,
+			url: liderApp.server+"/home/duel/"+me.duelId,
+			//contentType: 'application/json',
+            //dataType: "json",
+			success: function(data){
+				var divButtons = $("<div></div>").addClass("div-iniciar");
+				var buttonStart = $("<button></button>").html("Empezar").addClass("btn btn-primary btn-iniciar");
+				var divDuel = $("<div></div>").addClass("player-item-container");
+				var divUser = $("<div></div>").addClass("player-img");
+				var userImg = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+				var divUser2 = $("<div></div>").addClass("player-img player-img-opponent");
+				var userImg2 = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+				var divVs = $('<div></div>').addClass('player-item-vs');
+				var imgVs = $('<img />').attr('src', 'http://www.ccbetania.org/alianzaextrema/wp-content/uploads/2012/02/VS-1.png');
+				divDuel.append(divUser.append(userImg)).append(divVs.append(imgVs)).append(divUser2.append(userImg2));
+				divButtons.append(buttonStart);
+				buttonStart.click(function(e){
+					me.buildQuestion();
+				})
+				me.$el.append(divDuel).append(divButtons);				
+			},
+			error: function(xhr, status, error) {
+		    	try{
+			    	var obj = jQuery.parseJSON(xhr.responseText);
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}catch(ex){
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}
+		    	//window.location = "#home";
+	    	},	    	
+	    	complete: function(){
+	    		loader.hide();
+	    	}
+	    });
+		
 	},
 
 	initializePractice: function(){
@@ -79,16 +157,20 @@ var QuestionManager = Backbone.View.extend({
 		var loader = $(document.body).loaderPanel();
 		loader.show();
 		var header = liderApp.getHeaders();
+		var url = liderApp.server+"/home/question/test";
+		if(me.duel){
+			url = liderApp.server+"/home/question/duel/"+me.duelId;
+		}
 		$.ajax({
 		  	type: "GET",
 		  	headers: header,
-			url: liderApp.server+"/home/question/test",
-			//contentType: 'application/json',
-            //dataType: "json",
+			url: url,
+			contentType: 'application/json',
+            dataType: "json",
 			success: function(data){
 				me.lastData = JSON.stringify(data);
 				me.currentToken = data.token;
-				var q = data.question[0];
+				var q = data.question;
 				var category = q.category.name;
 				$("#questionCategory").html(category);
 				me.currentQuestionId = q.id;
@@ -115,7 +197,7 @@ var QuestionManager = Backbone.View.extend({
 				  			me.checkQuestion("no-answer");
 				  			me.showTimeExpireMessage();
 				  			setTimeout(function(){
-								me.responseAnswer();
+								me.responseAnswer(false);
 							},1000)
 				  			break;
 				  		case "pbar":
@@ -149,6 +231,44 @@ var QuestionManager = Backbone.View.extend({
 	    		loader.hide();
 	    	}
 		});
+		
+		// SHOW HELP BUtton
+		if(me.duel){
+			var helpDiv = $('<div>').addClass('help-container');
+			var helpBtn = $('<button>').attr('type', 'button').addClass('btn btn-primary help-button').html('50/50');
+			helpDiv.append(helpBtn);
+			
+			var header = liderApp.getHeaders();
+			helpBtn.click(function(){
+				$.confirm({
+				    text: "Desea utilizar la ayuda del 50/50?",
+				    confirm: function(button) {
+				        parameters = {
+							type: "GET",
+							headers: header,
+						    url: liderApp.server + "/home/question/help/"+me.currentToken,
+					        contentType: 'application/json',
+			            	dataType: "json",    
+					        success: function(data){
+					        	me.$el.children('div.btn').css('display', 'none');
+								me.$el.children('div.btn[data-id=' + me.answerHelp + ']').css('display', 'block');
+								me.$el.children('div.btn[data-id=' + me.answerOk + ']').css('display', 'block');
+								helpBtn.css('display', 'none');
+					        },
+					        error: function(){}
+						};
+	
+						$.ajax(parameters);
+				    },
+				    cancel: function(button) {
+				        // do something
+				    }
+				});
+			});
+			
+			this.$el.append(helpDiv);
+		}
+		
 	},
 
 	showTimeExpireMessage: function(){
@@ -210,6 +330,11 @@ var QuestionManager = Backbone.View.extend({
 	},
 
 	addAnswer: function(answer){
+		if(answer['help'])
+			this.answerHelp = answer['id'];
+		if(answer['oa'])
+			this.answerOk = answer['id'];
+			
 		var button = $("<div></div>").attr("data-id", answer['id']).html(answer['answer']).addClass("btn btn-default btn-answer");
 		return button;
 
@@ -228,10 +353,15 @@ var QuestionManager = Backbone.View.extend({
 			var loader = $(document.body).loaderPanel();
 			loader.show();
 		}
+
+		var url = liderApp.server+"/home/question/answer/check";
+		if(me.duel){
+			url = liderApp.server+"/home/question/answer/duel/check";
+		}
 		var config = {
 			headers: header,
 			type: "POST",
-			url: liderApp.server+"/home/question/answer/check",
+			url: url,
 			data: JSON.stringify(data),
 			contentType: 'application/json',
             dataType: "json",
@@ -256,7 +386,13 @@ var QuestionManager = Backbone.View.extend({
 					}
 					$("div[data-alert=true]", me.$el).fadeIn(100);
 					setTimeout(function(){
-						me.responseAnswer();
+						if(me.duel && response.lastOne){
+							me.responseAnswer(true);
+						}
+						else{
+							me.responseAnswer(false);
+						}
+						
 					}, 1000);
 				}
 			},
@@ -273,18 +409,32 @@ var QuestionManager = Backbone.View.extend({
 	endGame: function(){
 		liderApp.enableHeaders();
 	},
-	responseAnswer: function(){
+	responseAnswer: function(lastOne, m){
+		lastOne = lastOne || false;
 		var me = this;
 		var divButtons = $("<div></div>").addClass("div-iniciar");
 		var buttonStart = $("<button></button>").html("Siguiente").addClass("btn btn-success btn-iniciar ").attr("data-id", "btniniciar");
 		var buttonExit = $("<button></button>").html("Salir").addClass("btn btn-danger btn-iniciar").attr("data-id", "btnsalir");
 		var reportq = $("<a></a>").html("Reportar Pregunta");
 		var divReport = $("<div></div>").append(reportq).addClass("report-question");
-		divButtons.append(buttonExit).append(buttonStart);
+		divButtons.append(buttonExit);
 		
 		var img = $("<img />").attr("src", "images/lider-logo.png");
+		if(!lastOne)
+		{
+			divButtons.append(buttonStart);
+			var principalDiv = $("<div></div>").addClass("question-notify").append(img).append(divButtons).append(divReport);
+		}
+		else{
+			m = m ? m : 'Has finalizado las preguntas del duelo';
+			var message = $('<h3></h3>').html(m).addClass('message-final-duel');
+			var messageDiv = $('<div></div>').append(message).css('text-align', 'center');
+			divButtons.css('text-align', 'center');
+			var principalDiv = $("<div></div>").addClass("question-notify").append(img).append(messageDiv).append(divButtons);
+		}
+		
 		// me.$el.append(img).append(divButtons);
-		var principalDiv = $("<div></div>").addClass("question-notify").append(img).append(divButtons).append(divReport);
+		
 		var modal = $("<div></div>")
 			.css("position", "absolute")
 		 	.css("width", "100%")
@@ -344,67 +494,145 @@ var QuestionManager = Backbone.View.extend({
 				"title": "Pregunta Mal formulada",
 				"description": "No se entiende la pregunta"
 			}
-		}
+		};
 		var modal = $("<div></div>").addClass("modal fade");
 		_.each(arrayElements, function(value, key){
-			var link = $("<a></a>").attr("href", "#").addClass("list-group-item");
+			var link = $("<a></a>").attr("href", "#").addClass("list-group-item").attr("data-title", value['title']);
 			var title = $("<h4></h4>").addClass("list-group-item-heading").html(value['title']);
 			var description = $("<p></p>").addClass("list-group-item-text").html(value['description']);
 			link.append(title).append(description);
 			divReasons.append(link);
-			link.click(function(){
-				var data = {
-					questionId: me.currentQuestionId,
-					reportText: value['title'],
-				};
-				var header = liderApp.getHeaders();
-				var config = {
-					headers: header,
-					type: "POST",
-					url: liderApp.server+"/home/question/report",
-					data: JSON.stringify(data),
-					contentType: 'application/json',
-		            dataType: "json",
-		            success:function(response, data, c){
-		            	modal.modal("hide");
-		            	$("div.report-question").css("display", "none");
-		            },
-		            error: function(xhr, status, error) {
-				    	try{
-					    	var obj = jQuery.parseJSON(xhr.responseText);
-					    	var n = noty({
-					    		text: obj.message,
-					    		timeout: 1000,
-					    		type: "error"
-					    	});
-				    	}catch(ex){
-				    		var n = noty({
-					    		text: "Error",
-					    		timeout: 1000,
-					    		type: "error"
-					    	});
-				    	}
 
-			    	},
-				}
-				$.ajax(config)
+			link.click(function(){
+				divReasons.find('a.active').removeClass('active');
+				$(this).addClass('active');
 			})
-		})
+		});
+
+
+
+		var cdiv = $('<div></div>').addClass('form-group')
+					.append($('<label></label>').html('Causal'))
+					.append($('<textarea rows="3"></textarea>').addClass('form-control'));
+
+
+
+
 		var modalDialog = $("<div></div>").addClass("modal-dialog");
 		var modalHeader = $("<div></div>").addClass("modal-header");
 		var btnClose = $("<button></button>").attr("type", "button").attr("data-dismiss", "modal").addClass("close");
 		var spanClose = $("<span></span>").attr("aria-hidden", "true").html("&times;");
 		var spanClose2 = $("<span></span>").addClass("sr-only").html("Close");
 		btnClose.append(spanClose).append(spanClose2);
+		
 		var titleHeading = $("<h4></h4>").addClass("modal-title").html("Reportar Pregunta");
 		modalHeader.append(btnClose).append(titleHeading);
-		var modalBody = $("<div></div>").addClass("modal-body").append(divReasons);
+
+		var modalBody = $("<div></div>").addClass("modal-body").append(divReasons).append(cdiv);
 		var modalContent = $("<div></div>").addClass("modal-content");
-		modal.append(modalDialog.append(modalContent.append(modalHeader).append(modalBody)));
+
+		var modalFooter = $("<div></div>").addClass("modal-footer");
+		var closeButton = $('<button>').attr('type', 'button').attr('data-dismiss', 'modal').addClass('btn btn-default').html('Cerrar');
+		var saveButton = $('<button>').attr('type', 'button').addClass('btn btn-primary').html('Guardar');
+		modalFooter.append(closeButton).append(saveButton);
+		/*
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	<button type="button" class="btn btn-primary">Save changes</button>
+		*/
+
+		modal.append(modalDialog.append(modalContent.append(modalHeader).append(modalBody).append(modalFooter)));
 		$(document.body).append(modal);
 		modal.modal("show");
 		modal.on("hidden.bs.modal", function(){
     		modal.remove();
-    	})
+    	});
+
+    	saveButton.click(function(){
+    		var title = divReasons.find('a.active');
+    		if(title.length == 0){
+    			var n = noty({
+		    		text: 'Ninguna razon seleccionada',
+		    		timeout: 1000,
+		    		type: "error"
+		    	});
+		    	return;
+    		}
+
+
+    		var data = {
+				questionId: me.currentQuestionId,
+				reportText: title.attr('data-title'),
+				causal: cdiv.find("textarea").val()
+			};
+			var header = liderApp.getHeaders();
+			var config = {
+				headers: header,
+				type: "POST",
+				url: liderApp.server+"/home/question/report",
+				data: JSON.stringify(data),
+				contentType: 'application/json',
+	            dataType: "json",
+	            success:function(response, data, c){
+	            	modal.modal("hide");
+	            	$("div.report-question").css("display", "none");
+	            },
+	            error: function(xhr, status, error) {
+			    	try{
+				    	var obj = jQuery.parseJSON(xhr.responseText);
+				    	var n = noty({
+				    		text: obj.message,
+				    		timeout: 1000,
+				    		type: "error"
+				    	});
+			    	}catch(ex){
+			    		var n = noty({
+				    		text: "Error",
+				    		timeout: 1000,
+				    		type: "error"
+				    	});
+			    	}
+
+		    	},
+			}
+			$.ajax(config);
+    	});
+
+    	/*
+    	var data = {
+			questionId: me.currentQuestionId,
+			reportText: value['title'],
+		};
+		var header = liderApp.getHeaders();
+		var config = {
+			headers: header,
+			type: "POST",
+			url: liderApp.server+"/home/question/report",
+			data: JSON.stringify(data),
+			contentType: 'application/json',
+            dataType: "json",
+            success:function(response, data, c){
+            	modal.modal("hide");
+            	$("div.report-question").css("display", "none");
+            },
+            error: function(xhr, status, error) {
+		    	try{
+			    	var obj = jQuery.parseJSON(xhr.responseText);
+			    	var n = noty({
+			    		text: obj.message,
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}catch(ex){
+		    		var n = noty({
+			    		text: "Error",
+			    		timeout: 1000,
+			    		type: "error"
+			    	});
+		    	}
+
+	    	},
+		}
+		$.ajax(config)
+		*/
 	}
 })

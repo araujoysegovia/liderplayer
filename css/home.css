@@ -150,26 +150,6 @@ header[data-id=questionHeader] .counter{
 .panel-success .panel-heading{
 	background-color: #1EDB16;
 }
-.player-item .player-item-container{
-	padding-bottom: 20px;
-	padding-top: 10px;
-	width: 110px;
-	text-align: center;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	background-color: white;
-	border: 1px solid #DDD;
-	float: left
-}
-
-
-.player-item .player-item-container .player-img img{
-	-webkit-border-radius: 100px;
-	-moz-border-radius: 100px;
-	border-radius: 100px;
-	border: 1px solid #DDD;
-}
 
 .player-item .player-info{
 	width: 84px;
@@ -202,19 +182,6 @@ header[data-id=questionHeader] .counter{
 	float: right;
 }
 
-.player-item .player-item-vs{
-	height: 100%;
-	width: 60px;
-	float: left;
-	text-align: center;
-	padding-top: 50px;
-}
-
-.player-item .player-item-vs img{
-	width: 25px;
-	height: 25px;
-}
-
 
 /*Estilos para el panel de los miembros del equipo*/
 .panel-primary .panel-heading{
@@ -239,6 +206,11 @@ header[data-id=questionHeader] .counter{
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+	cursor: pointer;
+}
+
+.player-item-list:hover{
+	background-color: #eeeeee;
 }
 
 .player-item-list .player-img{
@@ -482,6 +454,11 @@ header[data-id=questionHeader] .counter{
 	margin-top: 40px;
 }
 
+.question-notify > div > .message-final-duel{
+	font: normal 25px/1 'Righteous', cursive;
+	color: white;
+}
+
 .question-notify > div{
 	margin-top: 20px;
 }
@@ -584,4 +561,56 @@ div.body-container center{
 
 .btn-send{
 	font: normal 20px/1 "Fredoka One", Helvetica, sans-serif;
+}
+
+/* Estilos para Panel donde aparecen los usuarios en un duelo */
+.player-item-container{
+	padding-bottom: 20px;
+	padding-top: 10px;
+	/*width: 110px;*/
+	text-align: center;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	display: inline-flex;
+}
+
+.player-item-container .player-img{
+	margin-top: 20px;
+}
+
+.player-item-container .player-img-opponent{
+	margin-left: 15px;
+}
+
+
+.player-item-container .player-img img{
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	border-radius: 100px;
+	background-color: white;
+	border: 1px solid #DDD;
+}
+
+.player-item-container .player-item-vs{
+	margin-left: 15px;
+}
+
+.player-item-vs img{
+	/*height: 100%;*/
+	width: 40px;
+	/*float: left;*/
+	text-align: center;
+	padding-top: 50px;
+}
+
+.help-container{
+	position: fixed;
+	bottom: 0px;
+	width: 100%;
+}
+
+.help-container .help-button{
+	width: 100%;
+	font: normal 25px/1 'Righteous', cursive;
 }

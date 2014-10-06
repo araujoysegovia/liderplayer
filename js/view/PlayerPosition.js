@@ -21,6 +21,7 @@ var PlayerPosition = Backbone.View.extend({
 				headers: header,
 				success: function(collection, response, options){
 					var data = response.data;
+					console.log(data);
 					var panelTable = new PanelTable({
 						container: me.$el,
 						title: "Posiciones Jugadores",
