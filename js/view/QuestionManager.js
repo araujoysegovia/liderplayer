@@ -88,9 +88,9 @@ var QuestionManager = Backbone.View.extend({
 				var buttonStart = $("<button></button>").html("Empezar").addClass("btn btn-primary btn-iniciar");
 				var divDuel = $("<div></div>").addClass("player-item-container");
 				var divUser = $("<div></div>").addClass("player-img");
-				var userImg = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+				var userImg = $("<img />").attr("src", liderApp.server+"/image/"+data.player_one.image+"?width=100&height=100").css("height", "100px").css("width", "100");
 				var divUser2 = $("<div></div>").addClass("player-img player-img-opponent");
-				var userImg2 = $("<img />").attr("src", liderApp.server+"/image/"+liderApp.session.getUser().image+"?width=100&height=100").css("height", "100px").css("width", "100");
+				var userImg2 = $("<img />").attr("src", liderApp.server+"/image/"+data.player_two.image+"?width=100&height=100").css("height", "100px").css("width", "100");
 				var divVs = $('<div></div>').addClass('player-item-vs');
 				var imgVs = $('<img />').attr('src', 'http://www.ccbetania.org/alianzaextrema/wp-content/uploads/2012/02/VS-1.png');
 				divDuel.append(divUser.append(userImg)).append(divVs.append(imgVs)).append(divUser2.append(userImg2));
