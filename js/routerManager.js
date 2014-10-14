@@ -31,7 +31,8 @@ var routerManager = Backbone.Router.extend({
 
 	home: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -43,7 +44,8 @@ var routerManager = Backbone.Router.extend({
 
 	perfil: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -55,7 +57,8 @@ var routerManager = Backbone.Router.extend({
 
 	practice: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -66,23 +69,29 @@ var routerManager = Backbone.Router.extend({
 	},
 
 	duel: function(id){
-
+		console.log("entre por aca");
 		if(!this.checkSession()){
-			window.location = "#login";
+			console.log("session no iniciada");
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
+		console.log("entre aqui 1");
 		this.defaultValues();
-		var span = $("span.location-span").html("Práctica");
+		console.log("entre aqui 2");
+		var span = $("span.location-span").html("Duelo");
 		span.css("margin-left", "-"+span.width()/2)
 		var idDecode = window.atob(id);
+		console.log("entre aqui");
 		this.application.createDuel(idDecode);
 	},
 
 
 	team: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -94,7 +103,8 @@ var routerManager = Backbone.Router.extend({
 
 	group: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -106,7 +116,8 @@ var routerManager = Backbone.Router.extend({
 
 	player: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -118,7 +129,8 @@ var routerManager = Backbone.Router.extend({
 
 	rule: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -129,7 +141,8 @@ var routerManager = Backbone.Router.extend({
 
 	help: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -141,7 +154,8 @@ var routerManager = Backbone.Router.extend({
 
 	suggestion: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -153,7 +167,8 @@ var routerManager = Backbone.Router.extend({
 
 	reward: function(){
 		if(!this.checkSession()){
-			window.location = "#login";
+			// window.location = "#login";
+			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
@@ -164,7 +179,8 @@ var routerManager = Backbone.Router.extend({
 
 	logout: function(){
 		this.application.session.deleteSession();
-		window.location = "#login";
+		// window.location = "#login";
+		this.login();
 		// Backbone.history.navigate("login", true);
 	},
 

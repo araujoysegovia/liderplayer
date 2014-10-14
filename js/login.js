@@ -18,7 +18,20 @@ $(document).ready(function(){
             //dataType: "json",
 			success: function(data){
 				liderApp.session.createSession(data);
-				window.location = "#home";
+				var route = Backbone.history.location.href;
+				route = route.split("#");
+				if(route.length > 1 && route[1] != "login" && route[1] != "logout")
+				{
+					console.log(route[1]);
+					// window.location = "#"+route[1];
+					Backbone.history.fragment = null;
+					Backbone.history.navigate(route[1], true);
+				}
+				else
+				{
+					window.location = "#home";
+				}
+				
 				// Backbone.history.navigate("home", true);
 			},
 			error: function(xhr, status, error) {
