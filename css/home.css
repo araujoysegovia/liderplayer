@@ -481,8 +481,8 @@ header[data-id=questionHeader] .counter{
 }
 
 .panel-positions .panel-heading{
-	background-color: #25A9F5;
-	color: white;
+	background-color: #FFF97E;
+	color: #000;
 	font: normal 20px/1 'Righteous', cursive;
 	text-align: center
 }
