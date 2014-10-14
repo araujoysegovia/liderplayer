@@ -285,26 +285,27 @@ Application.prototype = {
 			container: $("div.body-container"),
 			className: "panel-danger",
 			maxHeight: 180,
+			con: true,
 			collection: duelCollection,
 			tpl: "<div class='player-item-list'>"+
 					"<div class='player-img'>"+
-						"<img src='https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-128.png' width='40px' height='40px' />"+
+						"<img src='"+this.server+"/image/<%= imageVs %>?width=40&height=40' width='40px' height='40px'/>"+
 					"</div>"+
 					"<div class='player-info'>"+
-						"<h5><%= name %></h5>"+
-						"<h6><span class='glyphicon glyphicon-envelope'></span>  <%= email %></h6>"+
-						"<div class='games-info'>"+
+						"<h5><%= nameVs %></h5>"+
+						"<h6><span class='glyphicon glyphicon-envelope'></span>  <%= emailVs %></h6>"+
+						"<div class='games-info-finish'>"+
 							"<div class='match-info your-question'>"+
 								"<span>Tu</span>"+
-								"<span>2</span>"+
+								"<span><%= you %></span>"+
 							"</div>"+
 							"<div class='match-info rival-question'>"+
 								"<span>Rival</span>"+
-								"<span>3</span>"+
+								"<span><%= vs %></span>"+
 							"</div>"+
 							"<div class='match-info total-question'>"+
 								"<span>Total</span>"+
-								"<span>5</span>"+
+								"<span><%= total %></span>"+
 							"</div>"+
 						"</div>"+
 					"</div>"+					

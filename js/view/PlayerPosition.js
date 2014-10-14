@@ -35,16 +35,20 @@ var PlayerPosition = Backbone.View.extend({
 							"width": "50%"
 						},
 						{
-							"name": "Partidas jugadas",
+							"name": "Preguntas jugadas",
 							"value": "PJ"
 						},
 						{
 							"name": "win",
-							"value": "PG"
+							"value": "PC"
+						},
+						{
+							"name": "win whit help",
+							"value": "PCA"
 						},
 						{
 							"name": "loose",
-							"value": "PP"
+							"value": "PI"
 						},
 						{
 							"name": "points",
@@ -53,6 +57,7 @@ var PlayerPosition = Backbone.View.extend({
 						tpl: "<td><%= fullname %></td>"+
 							 "<td><%= total %></td>"+
 							 "<td><%= win %></td>"+
+							 "<td><%= winHelp %></td>"+
 							 "<td><%= lost %></td>"+
 							 "<td><%= totalPoint %></td>"
 					});

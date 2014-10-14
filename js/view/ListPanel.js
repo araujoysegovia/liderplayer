@@ -28,14 +28,18 @@ var ListPanel = Backbone.View.extend({
 		}
 		body.append(this.list);
 		this.$el.append(heading).append(body);
-		this.render();		
+		this.render();
 		if(me.collection){
 			var header = liderApp.getHeaders();
 			me.collection.url = liderApp.server+me.collection.url;
 			me.collection.fetch({
 				headers: header,
 				success: function(collection, response, options){
-					var data = response.data;					
+					var data = response.data;
+					if(me.con)
+					{
+						console.log(data);
+					}
 					_.each(data, function(value, key){
 						me.createItem(value);
 					})

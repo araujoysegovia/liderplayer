@@ -140,11 +140,8 @@ header[data-id=questionHeader] .counter{
 }
 
 /*Estilos para panel del duelo actual*/
-.player-item-list .player-info .games-info .your-question{
-	float: left;
-}
-.player-item-list .player-info .games-info .total-question{
-	float: right;
+.player-item-list .player-info{
+	/*float: left;*/
 }
 
 .panel-success .panel-heading{
@@ -156,6 +153,7 @@ header[data-id=questionHeader] .counter{
 	position: relative;
 	left: 50%;
 	margin-left: -42px;
+
 }
 
 .player-item .player-info h5{
@@ -325,25 +323,13 @@ header[data-id=questionHeader] .counter{
 	background-color: #D12067;
 	/*color: #5F5F5F;*/
 }
-.player-item .item-win{
-	background-color: #DFF0D8;
+
+.player-info > .games-info-finish{
+	display: inline-flex;
 }
 
-.player-item .item-loose{
-	background-color: #CFCFCF;
-}
-
-.player-item .player-item-container .player-info .games-info .score{
-	text-align: center;
-}
-
-.gray-scale{
-	-moz-filter: grayscale(100%);
-	-o-filter:grayscale(100%);
-	-ms-filter:grayscale(100%);
-	filter: grayscale(100%);
-	-webkit-filter: grayscale(100%); /* For Webkit browsers */
-	filter: gray; /* For IE 6 - 9 */
+.player-info > .games-info-finish > .match-info > span{
+	font: normal 14px/1 "Fredoka One", Helvetica, sans-serif !important;
 }
 
 
