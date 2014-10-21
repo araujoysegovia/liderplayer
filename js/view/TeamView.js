@@ -42,7 +42,7 @@ var TeamView = Backbone.View.extend({
 											"</div>"+
 											"<div class='match-info player-loose'>"+
 												"<img src='images/icons/loose.png' style='width:20px; margin-top:-7px;'/>"+
-												"<span><%= wonGames %></span>"+
+												"<span><%= lostGames %></span>"+ 
 											"</div>"+
 										"</div>"+
 									"</div>"+					

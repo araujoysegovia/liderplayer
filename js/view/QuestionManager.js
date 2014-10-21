@@ -212,6 +212,7 @@ var QuestionManager = Backbone.View.extend({
 
 			},
 			error: function(xhr, status, error) {
+				liderApp.reportError("Error al checkear la pregunta", xhr.responseText);
 		    	try{
 			    	var obj = jQuery.parseJSON(xhr.responseText);
 			    	var n = noty({
@@ -396,7 +397,8 @@ var QuestionManager = Backbone.View.extend({
 					}, 1000);
 				}
 			},
-			error: function(){
+			error: function(xhr, status, error){
+				liderApp.reportError("Error al checkear la pregunta", xhr.responseText);
 			},
 			complete: function(){
 				if(answerId != "no-answer"){
