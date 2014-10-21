@@ -5,7 +5,10 @@ var count = 0,
 	percent = 0;
 
 var interval = function(){
-	count ++;
+	if(count < 100)
+	{
+		count ++;
+	}
 	postMessage({'cmd': 'pbar', "value": count});
 	
 	var iterations = parseInt(totalSecond * (count/100));
@@ -16,7 +19,7 @@ var interval = function(){
 		beforeIterator = iterations;
 	}
 	
-	if(count > 100){
+	if(count > 100 && secNumber <= 0){
 		interval = null;
 		postMessage({'cmd': 'timeout'});
 		setTimeout(function(){
