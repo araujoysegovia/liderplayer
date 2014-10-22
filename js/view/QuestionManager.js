@@ -398,6 +398,11 @@ var QuestionManager = Backbone.View.extend({
 				}
 			},
 			error: function(xhr, status, error){
+				var n = noty({
+		    		text: 'Se ha presentado un error, por favor comunicate con el administrador',
+		    		timeout: 1000,
+		    		type: "error"
+		    	});
 				liderApp.reportError("Error al checkear la pregunta", xhr.responseText);
 			},
 			complete: function(){
