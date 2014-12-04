@@ -69,21 +69,16 @@ var routerManager = Backbone.Router.extend({
 	},
 
 	duel: function(id){
-		console.log("entre por aca");
 		if(!this.checkSession()){
-			console.log("session no iniciada");
 			// window.location = "#login";
 			this.login();
 			// Backbone.history.navigate("login", true);
 			return;
 		}
-		console.log("entre aqui 1");
 		this.defaultValues();
-		console.log("entre aqui 2");
 		var span = $("span.location-span").html("Duelo");
 		span.css("margin-left", "-"+span.width()/2)
 		var idDecode = window.atob(id);
-		console.log("entre aqui");
 		this.application.createDuel(idDecode);
 	},
 

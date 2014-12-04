@@ -212,7 +212,7 @@ var QuestionManager = Backbone.View.extend({
 
 			},
 			error: function(xhr, status, error) {
-				liderApp.reportError("Error al checkear la pregunta", xhr.responseText);
+				liderApp.reportError("Error al iniciar una pregunta", xhr.responseText);
 		    	try{
 			    	var obj = jQuery.parseJSON(xhr.responseText);
 			    	var n = noty({
