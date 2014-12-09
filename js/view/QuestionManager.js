@@ -13,6 +13,7 @@ var QuestionManager = Backbone.View.extend({
 	answerOk: null,
 	answerHelp: null,
 	socket: null,
+	user: null,
 	constructor : function(config) {
 		var self = this;
 		self._ensureElement();
@@ -25,6 +26,9 @@ var QuestionManager = Backbone.View.extend({
 	},
 	initialize: function(){
 		var me = this;
+		var userData = liderApp.session.getUser();
+		var userString = JSON.stringify(userData);
+		me.user = userString;
 		me.socket = io.connect('http://localhost:3000');
 		if(me.duel){
 			var loader = $(document.body).loaderPanel();
@@ -170,9 +174,7 @@ var QuestionManager = Backbone.View.extend({
             dataType: "json",
 			success: function(data){
 				me.lastData = JSON.stringify(data);
-				var user = liderApp.session.getUser();
-				var userString = JSON.stringify(user);
-				me.socket.emit("question", me.lastData, userString);
+				me.socket.emit("question", me.lastData, me.user);
 
 				me.currentToken = data.token;
 				var q = data.question;
@@ -194,12 +196,14 @@ var QuestionManager = Backbone.View.extend({
 				me.counter = new Worker("js/QuestionCounter.js");
 				me.counter.addEventListener('message', function(e) {
 					var data = e.data;
+					console.log(data);
 					switch (data.cmd) {
 				  		case "time":
-				  			me.socket.emit("time", data.value);
+				  			me.socket.emit("time", data.value, me.user);
 				  			spanCount.html(data.value+"'");
 				  			break;
 				  		case "timeout":
+				  			console.log('se acabo');
 				  			me.checkQuestion("no-answer");
 				  			me.showTimeExpireMessage();
 				  			setTimeout(function(){
@@ -257,7 +261,7 @@ var QuestionManager = Backbone.View.extend({
 					        contentType: 'application/json',
 			            	dataType: "json",    
 					        success: function(data){
-					        	me.socket.emit("help", true);
+					        	me.socket.emit("help", true, me.user);
 					        	me.$el.children('div.btn').css('display', 'none');
 								me.$el.children('div.btn[data-id=' + me.answerHelp + ']').css('display', 'block');
 								me.$el.children('div.btn[data-id=' + me.answerOk + ']').css('display', 'block');
@@ -281,14 +285,14 @@ var QuestionManager = Backbone.View.extend({
 
 	showTimeExpireMessage: function(){
 		var me = this;
-		me.socket.emit("answer", 'Tiempo Agotado');
+		me.socket.emit("answer", 'Tiempo Agotado', me.user);
 		$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
 		$("div[data-alert=true]", me.$el).fadeIn(100);
 	},
 
 	showSuccessMessage: function(answerId, showMessage){
 		var me = this;
-		me.socket.emit("answer", 'Correcto');
+		me.socket.emit("answer", 'Correcto', me.user);
 		var bId = $("div[data-id='"+answerId+"']");
 		if(showMessage !== undefined && showMessage == true){
 			$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
@@ -298,7 +302,7 @@ var QuestionManager = Backbone.View.extend({
 
 	showWrongMessage: function(answerId){
 		var me = this;
-		me.socket.emit("answer", 'Incorrecto');
+		me.socket.emit("answer", 'Incorrecto', me.user);
 		var bId = $("div[data-id='"+answerId+"']");
 		$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
 		bId.addClass("btn-danger");
