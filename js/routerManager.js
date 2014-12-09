@@ -1,4 +1,4 @@
-var routerManager = Backbone.Router.extend({
+dvar routerManager = Backbone.Router.extend({
 	application: null,
 	routes: {
 		"" : "login",
