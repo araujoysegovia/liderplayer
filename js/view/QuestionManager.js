@@ -12,6 +12,7 @@ var QuestionManager = Backbone.View.extend({
 	counter: null,
 	answerOk: null,
 	answerHelp: null,
+	socket: null,
 	constructor : function(config) {
 		var self = this;
 		self._ensureElement();
@@ -24,7 +25,7 @@ var QuestionManager = Backbone.View.extend({
 	},
 	initialize: function(){
 		var me = this;
-
+		me.socket = io.connect('http://localhost:3000');
 		if(me.duel){
 			var loader = $(document.body).loaderPanel();
 			loader.show();
@@ -169,6 +170,10 @@ var QuestionManager = Backbone.View.extend({
             dataType: "json",
 			success: function(data){
 				me.lastData = JSON.stringify(data);
+				var user = liderApp.session.getUser();
+				var userString = JSON.stringify(user);
+				me.socket.emit("question", me.lastData, userString);
+
 				me.currentToken = data.token;
 				var q = data.question;
 				var category = q.category.name;
@@ -191,6 +196,7 @@ var QuestionManager = Backbone.View.extend({
 					var data = e.data;
 					switch (data.cmd) {
 				  		case "time":
+				  			me.socket.emit("time", data.value);
 				  			spanCount.html(data.value+"'");
 				  			break;
 				  		case "timeout":
@@ -212,6 +218,7 @@ var QuestionManager = Backbone.View.extend({
 
 			},
 			error: function(xhr, status, error) {
+				liderApp.reportError("Error al iniciar una pregunta", xhr.responseText);
 		    	try{
 			    	var obj = jQuery.parseJSON(xhr.responseText);
 			    	var n = noty({
@@ -250,6 +257,7 @@ var QuestionManager = Backbone.View.extend({
 					        contentType: 'application/json',
 			            	dataType: "json",    
 					        success: function(data){
+					        	me.socket.emit("help", true);
 					        	me.$el.children('div.btn').css('display', 'none');
 								me.$el.children('div.btn[data-id=' + me.answerHelp + ']').css('display', 'block');
 								me.$el.children('div.btn[data-id=' + me.answerOk + ']').css('display', 'block');
@@ -273,11 +281,14 @@ var QuestionManager = Backbone.View.extend({
 
 	showTimeExpireMessage: function(){
 		var me = this;
+		me.socket.emit("answer", 'Tiempo Agotado');
 		$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
 		$("div[data-alert=true]", me.$el).fadeIn(100);
 	},
 
 	showSuccessMessage: function(answerId, showMessage){
+		var me = this;
+		me.socket.emit("answer", 'Correcto');
 		var bId = $("div[data-id='"+answerId+"']");
 		if(showMessage !== undefined && showMessage == true){
 			$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
@@ -286,6 +297,8 @@ var QuestionManager = Backbone.View.extend({
 	},
 
 	showWrongMessage: function(answerId){
+		var me = this;
+		me.socket.emit("answer", 'Incorrecto');
 		var bId = $("div[data-id='"+answerId+"']");
 		$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
 		bId.addClass("btn-danger");
@@ -396,7 +409,13 @@ var QuestionManager = Backbone.View.extend({
 					}, 1000);
 				}
 			},
-			error: function(){
+			error: function(xhr, status, error){
+				var n = noty({
+		    		text: 'Se ha presentado un error, por favor comunicate con el administrador',
+		    		timeout: 1000,
+		    		type: "error"
+		    	});
+				liderApp.reportError("Error al checkear la pregunta", xhr.responseText);
 			},
 			complete: function(){
 				if(answerId != "no-answer"){
