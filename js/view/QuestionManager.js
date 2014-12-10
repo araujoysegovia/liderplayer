@@ -196,12 +196,12 @@ var QuestionManager = Backbone.View.extend({
 					var data = e.data;
 					switch (data.cmd) {
 				  		case "time":
-				  			me.socket.emit("time", data.value);
+				  			me.socket.emit("time", data.value,userString);
 				  			spanCount.html(data.value+"'");
 				  			break;
 				  		case "timeout":
 				  			me.checkQuestion("no-answer");
-				  			me.showTimeExpireMessage();
+				  			me.showTimeExpireMessage(userString);
 				  			setTimeout(function(){
 								me.responseAnswer(false);
 							},1000)
@@ -279,16 +279,18 @@ var QuestionManager = Backbone.View.extend({
 		
 	},
 
-	showTimeExpireMessage: function(){
+	showTimeExpireMessage: function(user){
 		var me = this;
-		me.socket.emit("answer", 'Tiempo Agotado');
+		me.socket.emit("answer", 'Tiempo Agotado',user);
 		$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
 		$("div[data-alert=true]", me.$el).fadeIn(100);
 	},
 
 	showSuccessMessage: function(answerId, showMessage){
 		var me = this;
-		me.socket.emit("answer", 'Correcto');
+		var user = liderApp.session.getUser();
+		var userString = JSON.stringify(user);
+		me.socket.emit("answer", 'Correcto',userString);
 		var bId = $("div[data-id='"+answerId+"']");
 		if(showMessage !== undefined && showMessage == true){
 			$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
@@ -298,7 +300,9 @@ var QuestionManager = Backbone.View.extend({
 
 	showWrongMessage: function(answerId){
 		var me = this;
-		me.socket.emit("answer", 'Incorrecto');
+		var user = liderApp.session.getUser();
+		var userString = JSON.stringify(user);
+		me.socket.emit("answer", 'Incorrecto',userString);
 		var bId = $("div[data-id='"+answerId+"']");
 		$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
 		bId.addClass("btn-danger");
@@ -371,6 +375,8 @@ var QuestionManager = Backbone.View.extend({
 		if(me.duel){
 			url = liderApp.server+"/home/question/answer/duel/check";
 		}
+		var user = liderApp.session.getUser();
+		var userString = JSON.stringify(user);
 		var config = {
 			headers: header,
 			type: "POST",
@@ -393,7 +399,7 @@ var QuestionManager = Backbone.View.extend({
 							me.showWrongMessage(answerId);
 						}
 						else if(response.code == "01"){
-							me.showTimeExpireMessage();
+							me.showTimeExpireMessage(userString);
 						}
 						liderApp.session.addQuestion(false);
 					}
