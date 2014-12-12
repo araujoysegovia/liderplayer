@@ -205,7 +205,7 @@ var QuestionManager = Backbone.View.extend({
 				  		case "timeout":
 				  			console.log('se acabo');
 				  			me.checkQuestion("no-answer");
-				  			me.showTimeExpireMessage(userString);
+				  			me.showTimeExpireMessage(me.user);
 				  			setTimeout(function(){
 								me.responseAnswer(false);
 							},1000)
