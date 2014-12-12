@@ -28,7 +28,7 @@ Application.prototype = {
 
 	//server: "http://10.102.1.22/lider/web/app_dev.php",
 	// server: "http://10.101.1.60/lider/web/app_dev.php",
-	server: "http://localhost/lider/web/app_dev.php",
+	server: "http://10.101.1.68/lider/web/app_dev.php",
 	//server: "http://soylider.sifinca.net",
 	// server: "http://190.242.98.189/lider/web/app_dev.php",
 	constructor: function(){
