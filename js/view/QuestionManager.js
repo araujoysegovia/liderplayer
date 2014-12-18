@@ -30,6 +30,11 @@ var QuestionManager = Backbone.View.extend({
 		var userString = JSON.stringify(userData);
 		me.user = userString;
 		me.socket = io.connect('http://localhost:3000');
+		me.socket.emit("load", me.user);
+
+		window.onbeforeunload = function(){
+			me.socket.emit("goOut", me.user);
+		}
 		if(me.duel){
 			var loader = $(document.body).loaderPanel();
 			loader.show();
@@ -195,8 +200,7 @@ var QuestionManager = Backbone.View.extend({
 				me.randomAnswer(q);
 				me.counter = new Worker("js/QuestionCounter.js");
 				me.counter.addEventListener('message', function(e) {
-					var data = e.data;
-					console.log(data);
+					var data = e.data;				
 					switch (data.cmd) {
 				  		case "time":
 				  			me.socket.emit("time", data.value, me.user);
@@ -285,14 +289,14 @@ var QuestionManager = Backbone.View.extend({
 
 	showTimeExpireMessage: function(){
 		var me = this;
-		me.socket.emit("answer", 'Tiempo Agotado', me.user);
+		me.socket.emit("answer", 'Tiempo Agotado', me.user,"-1");
 		$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
 		$("div[data-alert=true]", me.$el).fadeIn(100);
 	},
 
 	showSuccessMessage: function(answerId, showMessage){
 		var me = this;
-		me.socket.emit("answer", 'Correcto', me.user);
+		me.socket.emit("answer", 'Correcto', me.user,answerId);
 		var bId = $("div[data-id='"+answerId+"']");
 		if(showMessage !== undefined && showMessage == true){
 			$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
@@ -303,7 +307,7 @@ var QuestionManager = Backbone.View.extend({
 	showWrongMessage: function(answerId){
 		var me = this;
 
-		me.socket.emit("answer", 'Incorrecto', me.user);
+		me.socket.emit("answer", 'Incorrecto', me.user,answerId);
 		var bId = $("div[data-id='"+answerId+"']");
 		$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
 		bId.addClass("btn-danger");
