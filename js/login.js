@@ -20,6 +20,7 @@ $(document).ready(function(){
 				liderApp.session.createSession(data);
 				var route = Backbone.history.location.href;
 				route = route.split("#");
+				// Redireccion en caso de inicio de session para url especifica
 				if(route.length > 1 && route[1] != "login" && route[1] != "logout")
 				{
 					console.log(route[1]);
