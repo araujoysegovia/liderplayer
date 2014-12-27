@@ -195,8 +195,8 @@ var QuestionManager = Backbone.View.extend({
 				me.counter.addEventListener('message', function(e) {
 					var data = e.data;
 					switch (data.cmd) {
-				  		case "time":
-				  			me.socket.emit("time", data.value);
+				  		case "time":				  			
+				  			me.socket.emit("time", data.value, user, q);
 				  			spanCount.html(data.value+"'");
 				  			break;
 				  		case "timeout":
@@ -280,15 +280,19 @@ var QuestionManager = Backbone.View.extend({
 	},
 
 	showTimeExpireMessage: function(){
-		var me = this;
-		me.socket.emit("answer", 'Tiempo Agotado');
+		var me = this;		
+		var user = liderApp.session.getUser();
+		user = JSON.stringify(user);
+		me.socket.emit("answer", 'Tiempo Agotado', user, me.currentQuestionId);
 		$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
 		$("div[data-alert=true]", me.$el).fadeIn(100);
 	},
 
-	showSuccessMessage: function(answerId, showMessage){
-		var me = this;
-		me.socket.emit("answer", 'Correcto');
+	showSuccessMessage: function(answerId, showMessage, pointsForQuestion){
+		var me = this;	
+		var user = liderApp.session.getUser();	
+		user = JSON.stringify(user);
+		me.socket.emit("answer", 'Correcto', user, me.currentQuestionId, pointsForQuestion);
 		var bId = $("div[data-id='"+answerId+"']");
 		if(showMessage !== undefined && showMessage == true){
 			$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
@@ -297,8 +301,10 @@ var QuestionManager = Backbone.View.extend({
 	},
 
 	showWrongMessage: function(answerId){
-		var me = this;
-		me.socket.emit("answer", 'Incorrecto');
+		var me = this;		
+		var user = liderApp.session.getUser();
+		user = JSON.stringify(user);
+		me.socket.emit("answer", 'Incorrecto', user, me.currentQuestionId);
 		var bId = $("div[data-id='"+answerId+"']");
 		$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
 		bId.addClass("btn-danger");
@@ -379,10 +385,13 @@ var QuestionManager = Backbone.View.extend({
 			contentType: 'application/json',
             dataType: "json",
 			success: function(response, data, c){
-				
+				console.log(response)
+				console.log(data)
+				console.log(c)
+				console.log(me.currentQuestionId)
 				if(answerId != "no-answer"){
 					if(response.success){
-						me.showSuccessMessage(answerId, true)
+						me.showSuccessMessage(answerId, true, response.pointsForQuestion)
 						liderApp.session.addQuestion(true);
 					}
 					else{
