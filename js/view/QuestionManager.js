@@ -29,7 +29,7 @@ var QuestionManager = Backbone.View.extend({
 		var userData = liderApp.session.getUser();
 		var userString = JSON.stringify(userData);
 		me.user = userString;
-		me.socket = io.connect('http://localhost:3000');
+		me.socket = io.connect('http://10.102.1.22:3000');
 		me.socket.emit("load", me.user);
 
 		window.onbeforeunload = function(){
@@ -255,6 +255,8 @@ var QuestionManager = Backbone.View.extend({
 			
 			var header = liderApp.getHeaders();
 			helpBtn.click(function(){
+				console.log("currentoken")
+				console.log(me.currentQuestionId)
 				$.confirm({
 				    text: "Desea utilizar la ayuda del 50/50?",
 				    confirm: function(button) {
@@ -265,7 +267,10 @@ var QuestionManager = Backbone.View.extend({
 					        contentType: 'application/json',
 			            	dataType: "json",    
 					        success: function(data){
-					        	me.socket.emit("help", true, me.user);
+					        	console.log("emit help")
+					        	console.log('me.currentQuestionId')
+					        	console.log(me.currentQuestionId)
+					        	me.socket.emit("help", true, me.user, me.currentQuestionId);
 					        	me.$el.children('div.btn').css('display', 'none');
 								me.$el.children('div.btn[data-id=' + me.answerHelp + ']').css('display', 'block');
 								me.$el.children('div.btn[data-id=' + me.answerOk + ']').css('display', 'block');
@@ -288,32 +293,22 @@ var QuestionManager = Backbone.View.extend({
 	},
 
 	showTimeExpireMessage: function(){
-// <<<<<<< HEAD
-		var me = this;		
-		// var user = liderApp.session.getUser();
-		// user = JSON.stringify(user);
-		// me.socket.emit("answer", 'Tiempo Agotado', user, me.currentQuestionId);
-// =======
-// 		var me = this;
-// 		me.socket.emit("answer", 'Tiempo Agotado', me.user, "-1");
-// >>>>>>> f12d85e8311d32f2e46e0f3a2b38c241a3a02b8e
 
-		me.socket.emit("answer", 'Tiempo Agotado', me.user, me.currentQuestionId, "-1");
+		var me = this;		
+
+		me.socket.emit("answer", 'Tiempo Agotado', me.user, me.currentQuestionId, '0' ,"-1");
 		$("span", ".div-question").html("Tiempo Agotado").css("color", "#F0AD4E");
 		$("div[data-alert=true]", me.$el).fadeIn(100);
 	},
 
-// <<<<<<< HEAD
-// 	showSuccessMessage: function(answerId, showMessage, pointsForQuestion){
-// 		var me = this;	
-// 		var user = liderApp.session.getUser();	
-// 		user = JSON.stringify(user);
-// 		me.socket.emit("answer", 'Correcto', user, me.currentQuestionId, pointsForQuestion);
-// =======
-	showSuccessMessage: function(answerId, showMessage, pointsForQuestion){
+	showSuccessMessage: function(answerId, showMessage, pointsForQuestion, pointsPlayer){
 		var me = this;
-		me.socket.emit("answer", 'Correcto', me.user,me.currentQuestionId, pointsForQuestion,answerId);
-// >>>>>>> f12d85e8311d32f2e46e0f3a2b38c241a3a02b8e
+		
+//		pointsPlayer = parseInt(pointsPlayer) + parseInt(pointsForQuestion);
+//		console.log("Puntos jugador conectado")
+//		console.log(pointsPlayer)
+		
+		me.socket.emit("answer", 'Correcto', me.user,me.currentQuestionId, String(pointsPlayer), answerId);
 		var bId = $("div[data-id='"+answerId+"']");
 		if(showMessage !== undefined && showMessage == true){
 			$("span", ".div-question").html("Correcto").css("color", "#5CB85C");
@@ -322,16 +317,10 @@ var QuestionManager = Backbone.View.extend({
 	},
 
 	showWrongMessage: function(answerId){
-// <<<<<<< HEAD
-// 		var me = this;		
-// 		var user = liderApp.session.getUser();
-// 		user = JSON.stringify(user);
-// 		me.socket.emit("answer", 'Incorrecto', user, me.currentQuestionId);
-// =======
+
 		var me = this;
 
-		me.socket.emit("answer", 'Incorrecto', me.user, me.currentQuestionId,answerId);
-// >>>>>>> f12d85e8311d32f2e46e0f3a2b38c241a3a02b8e
+		me.socket.emit("answer", 'Incorrecto', me.user, me.currentQuestionId, '0', answerId);
 		var bId = $("div[data-id='"+answerId+"']");
 		$("span", ".div-question").html("Incorrecto").css("color", "#D9534F");
 		bId.addClass("btn-danger");
@@ -401,6 +390,8 @@ var QuestionManager = Backbone.View.extend({
 		}
 
 		var url = liderApp.server+"/home/question/answer/check";
+		console.log("Duel")
+		console.log(me.duel)
 		if(me.duel){
 			url = liderApp.server+"/home/question/answer/duel/check";
 		}
@@ -415,18 +406,18 @@ var QuestionManager = Backbone.View.extend({
             dataType: "json",
 			success: function(response, data, c){
 				console.log(response)
-				console.log(data)
-				console.log(c)
-				console.log(me.currentQuestionId)
+//				console.log(data)
+//				console.log(c)
+//				console.log(me.currentQuestionId)
 				if(answerId != "no-answer"){
 					if(response.success){
-						me.showSuccessMessage(answerId, true, response.pointsForQuestion)
+						me.showSuccessMessage(answerId, true, response.pointsForQuestion, response.pointsPlayer);
 						liderApp.session.addQuestion(true);
 					}
 					else{
 						if(response.code == "02"){
 							if(response.answerOk){
-								me.showSuccessMessage(response.answerOk)
+								//me.showSuccessMessage(response.answerOk)
 							}
 							me.showWrongMessage(answerId);
 						}
