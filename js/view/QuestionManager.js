@@ -29,7 +29,7 @@ var QuestionManager = Backbone.View.extend({
 		var userData = liderApp.session.getUser();
 		var userString = JSON.stringify(userData);
 		me.user = userString;
-		me.socket = io.connect('http://10.102.1.22:3000');
+		me.socket = io.connect('http://10.101.1.118:3000');
 		me.socket.emit("load", me.user);
 
 		window.onbeforeunload = function(){
