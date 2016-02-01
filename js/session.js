@@ -17,55 +17,55 @@ Session.prototype = {
 		var me = this;
 		var jsonModel = JSON.stringify(mod);
 		me.trigger("createSession", mod);
-		sessionStorage[this.sessionName] = jsonModel;
+		localStorage[this.sessionName] = jsonModel;
 	},
 
 	updateSession: function(obj){
-		var session = JSON.parse(sessionStorage[this.sessionName]);
+		var session = JSON.parse(localStorage[this.sessionName]);
 		session['user'] = obj;
-		sessionStorage[this.sessionName] = JSON.stringify(session);
+		localStorage[this.sessionName] = JSON.stringify(session);
 	},
 
 	deleteSession: function(){
-		sessionStorage.clear();
+		localStorage.clear();
 	},
 
 	getToken: function(){
-		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		var ses =  JSON.parse(localStorage[this.sessionName]);
 		return ses.token;
 	},
 
 	getConfig: function(){
-		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		var ses =  JSON.parse(localStorage[this.sessionName]);
 		return ses.config;
 	},
 
 	getUser: function(){
-		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		var ses =  JSON.parse(localStorage[this.sessionName]);
 		return ses.user;
 	},
 
 	isCreated: function(){
-		return sessionStorage[this.sessionName] ? true : false;
+		return localStorage[this.sessionName] ? true : false;
 	},
 	verificateChangePassword: function(){
-		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		var ses =  JSON.parse(localStorage[this.sessionName]);
 		return ses.user.changePassword;
 	},
 	setChangePassword: function(){
-		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		var ses =  JSON.parse(localStorage[this.sessionName]);
 		ses.user.changePassword = false;
 		this.updateSession(ses.user);
 	},
 	getEffectiveness: function(){
-		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		var ses =  JSON.parse(localStorage[this.sessionName]);
 		if(ses.user.counteffectiveness > 0){
 			return (ses.user.wineffectiveness*100)/ses.user.counteffectiveness
 		}
 		return 0;
 	},
 	addQuestion: function(ok){
-		var ses =  JSON.parse(sessionStorage[this.sessionName]);
+		var ses =  JSON.parse(localStorage[this.sessionName]);
 		if(!ses.user.counteffectiveness){
 			ses.user.counteffectiveness = 0;	
 		}
