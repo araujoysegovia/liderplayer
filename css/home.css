@@ -296,6 +296,7 @@ header[data-id=questionHeader] .counter{
 
 .home .menu-panel > ul > li > a{
 	color: white;
+	font-weight: normal;
 }
 
 .home .menu-panel > ul > .first-element{
