@@ -37,6 +37,8 @@ Session.prototype = {
 
 	getConfig: function(){
 		var ses =  JSON.parse(localStorage[this.sessionName]);
+		
+		console.log(ses)
 		return ses.config;
 	},
 
@@ -50,6 +52,7 @@ Session.prototype = {
 	},
 	verificateChangePassword: function(){
 		var ses =  JSON.parse(localStorage[this.sessionName]);
+		//console.log(ses);
 		return ses.user.changePassword;
 	},
 	setChangePassword: function(){

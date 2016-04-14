@@ -34,6 +34,9 @@ var interval = function(){
 
 self.addEventListener('message', function(e) {
 	var data = e.data;
+	
+	console.log('data')
+	console.log(data)
   	switch (data.cmd) {
   		case "start":
   			interval();
