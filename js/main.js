@@ -31,7 +31,7 @@ Application.prototype = {
 	//server: "http://10.101.1.68/lider/web/app_dev.php",
 	//server: "http://www.sifinca.net/lider/web/app.php",
 	//server: "http://lider.sifinca.net/web",
-	server:  'http://www.sifinca.net/lider/web/app.php/';
+	server:  'http://www.sifinca.net/lider/web/app.php',
 	//server: "http://soylider.sifinca.net", 
 	// server: "http://190.242.98.189/lider/web/app_dev.php",
 	constructor: function(){
